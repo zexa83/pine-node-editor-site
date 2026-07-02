@@ -231,7 +231,7 @@
   .mockup-body {
     display: grid;
     grid-template-columns: 160px 1fr;
-    min-height: 340px;
+    min-height: 540px;
   }
   .mockup-side {
     border-right: 1px solid var(--border);
@@ -254,19 +254,40 @@
   }
   .mockup-side .item.on { background: var(--bg-button); color: var(--text); }
 
-  .mockup-code {
+  .mockup-code-panel {
     position: absolute;
-    inset: 0;
-    margin: 0;
-    padding: 22px 26px;
-    font-family: "Cascadia Code", "Consolas", monospace;
-    font-size: 12px;
-    line-height: 1.8;
-    color: rgba(79, 195, 247, 0.16);
-    white-space: pre-wrap;
+    left: 24px;
+    right: 24px;
+    top: 300px;
+    bottom: 20px;
+    padding: 14px 18px;
+    border-radius: 8px;
+    background: rgba(15, 17, 22, 0.55);
+    border: 1px solid rgba(56, 60, 71, 0.5);
     overflow: hidden;
     pointer-events: none;
+    text-align: left;
+  }
+  .mockup-code-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: rgba(79, 195, 247, 0.6);
+    margin-bottom: 8px;
+  }
+  .mockup-code {
+    margin: 0;
+    font-family: "Cascadia Code", "Consolas", monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    color: rgba(207, 232, 245, 0.65);
+    white-space: pre-wrap;
     user-select: none;
+  }
+
+  @media (max-width: 760px) {
+    .mockup-code-panel { display: none; }
   }
 
   .mockup-canvas {
@@ -618,7 +639,10 @@
           <div class="item">Long / Short</div>
         </div>
         <div class="mockup-canvas" id="mockup-canvas">
-          <pre class="mockup-code" id="mockup-code"></pre>
+          <div class="mockup-code-panel">
+            <div class="mockup-code-label">Generated Pine Script</div>
+            <pre class="mockup-code" id="mockup-code"></pre>
+          </div>
           <svg class="wires" id="mockup-wires"></svg>
           <div class="node n1">
             <div class="hd">Price Source</div>
