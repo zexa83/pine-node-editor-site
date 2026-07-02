@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pine Node Editor — Visual Strategy Builder for TradingView</title>
+<meta name="description" content="Build TradingView strategies by wiring nodes together — no Pine Script coding required. Export clean, ready-to-paste Pine Script v6 in seconds.">
+<style>
+  :root {
+    --bg: #0e0f13;
+    --bg-alt: #14161c;
+    --bg-card: #1a1c22;
+    --bg-button: #2a2d36;
+    --bg-button-hover: #383c47;
+    --border: #2c2f39;
+    --text: #e8e9ed;
+    --text-muted: #8a8f9b;
+    --accent: #4fc3f7;
+    --accent-hover: #6fd1fb;
+    --accent-soft: rgba(79, 195, 247, 0.12);
+    --pro: #4caf50;
+    --pro-soft: rgba(76, 175, 80, 0.12);
+    --danger: #e57373;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- Nav ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(14, 15, 19, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  nav {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: 0.2px;
+  }
+
+  .logo-mark {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, var(--accent), #2e7cad);
+    position: relative;
+    flex: none;
+  }
+  .logo-mark::before, .logo-mark::after {
+    content: "";
+    position: absolute;
+    background: #0e0f13;
+    border-radius: 1px;
+  }
+  .logo-mark::before { width: 3px; height: 3px; top: 6px; left: 6px; box-shadow: 6px 0 0 #0e0f13, 0 12px 0 #0e0f13, 6px 12px 0 #0e0f13; }
+  .logo-mark::after { width: 12px; height: 2px; top: 12px; left: 7px; background: #0e0f13; opacity: .8; }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-cta {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--bg-button);
+    color: var(--text);
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--bg-button-hover); }
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #07222c;
+  }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-lg { padding: 13px 26px; font-size: 15px; border-radius: 10px; }
+
+  @media (max-width: 760px) {
+    .nav-links { display: none; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 88px 0 72px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 500px;
+    background: radial-gradient(ellipse at center, rgba(79,195,247,0.16) 0%, rgba(79,195,247,0) 70%);
+    pointer-events: none;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    background: var(--accent-soft);
+    border: 1px solid rgba(79,195,247,0.3);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-size: 52px;
+    line-height: 1.12;
+    font-weight: 800;
+    margin: 0 0 20px;
+    letter-spacing: -1px;
+  }
+  h1 .grad {
+    background: linear-gradient(90deg, var(--accent), #8be9fd);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero p.sub {
+    max-width: 620px;
+    margin: 0 auto 36px;
+    font-size: 18px;
+    color: var(--text-muted);
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .hero-note {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 34px; }
+    .hero { padding: 56px 0 48px; }
+  }
+
+  /* ---------- Mockup ---------- */
+  .mockup {
+    margin: 56px auto 0;
+    max-width: 980px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    box-shadow: 0 30px 80px -20px rgba(0,0,0,0.6);
+    overflow: hidden;
+  }
+  .mockup-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    background: #16181f;
+    border-bottom: 1px solid var(--border);
+  }
+  .mockup-dot { width: 10px; height: 10px; border-radius: 50%; background: #383c47; }
+  .mockup-dot:nth-child(1) { background: #e5737388; }
+  .mockup-dot:nth-child(2) { background: #f2c66d88; }
+  .mockup-dot:nth-child(3) { background: #4caf5088; }
+
+  .mockup-body {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    min-height: 340px;
+  }
+  .mockup-side {
+    border-right: 1px solid var(--border);
+    padding: 14px 10px;
+    background: #16181f;
+  }
+  .mockup-side .grp {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-muted);
+    margin: 12px 6px 6px;
+  }
+  .mockup-side .item {
+    font-size: 12px;
+    padding: 7px 8px;
+    border-radius: 6px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .mockup-side .item.on { background: var(--bg-button); color: var(--text); }
+
+  .mockup-canvas {
+    position: relative;
+    background:
+      radial-gradient(circle at 1px 1px, #23252d 1px, transparent 0) 0 0/22px 22px,
+      var(--bg);
+  }
+
+  .node {
+    position: absolute;
+    width: 140px;
+    border-radius: 8px;
+    background: #1e2129;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 20px -8px rgba(0,0,0,0.5);
+    font-size: 11px;
+  }
+  .node .hd {
+    padding: 7px 10px;
+    border-radius: 8px 8px 0 0;
+    font-weight: 700;
+    color: #cfe8f5;
+  }
+  .node .bd { padding: 8px 10px; color: var(--text-muted); }
+  .node .bd .row { display:flex; justify-content: space-between; padding: 3px 0; }
+  .node .port { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display:inline-block; }
+
+  .n1 { top: 34px; left: 20px; }
+  .n1 .hd { background: #2a3f5f; }
+  .n2 { top: 34px; left: 220px; }
+  .n2 .hd { background: #3f2a5f; }
+  .n3 { top: 168px; left: 220px; }
+  .n3 .hd { background: #5f3f2a; }
+  .n4 { top: 100px; left: 420px; }
+  .n4 .hd { background: #2a5f3f; }
+
+  svg.wires { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  svg.wires path { fill: none; stroke: var(--accent); stroke-width: 1.6; opacity: 0.55; }
+
+  @media (max-width: 760px) {
+    .mockup-body { grid-template-columns: 1fr; }
+    .mockup-side { display: none; }
+    .mockup-canvas { min-height: 260px; }
+    .n4 { left: 220px; top: 250px; }
+  }
+
+  /* ---------- Sections ---------- */
+  section { padding: 88px 0; }
+  .section-head {
+    text-align: center;
+    max-width: 620px;
+    margin: 0 auto 52px;
+  }
+  .kicker {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  h2 {
+    font-size: 34px;
+    font-weight: 800;
+    margin: 0 0 12px;
+    letter-spacing: -0.5px;
+  }
+  .section-head p { color: var(--text-muted); font-size: 16px; margin: 0; }
+
+  /* ---------- Features ---------- */
+  .grid-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 900px) { .grid-features { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .grid-features { grid-template-columns: 1fr; } }
+
+  .feature-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .feature-card:hover { border-color: rgba(79,195,247,0.35); transform: translateY(-2px); }
+
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 9px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 18px;
+  }
+  .feature-card h3 { font-size: 16px; margin: 0 0 8px; }
+  .feature-card p { font-size: 14px; color: var(--text-muted); margin: 0; }
+
+  /* ---------- How it works ---------- */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    counter-reset: step;
+  }
+  @media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
+  .step {
+    position: relative;
+    padding: 28px 22px 22px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  .step .num {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #07222c;
+    font-weight: 800;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .step h3 { font-size: 16px; margin: 0 0 8px; }
+  .step p { font-size: 14px; color: var(--text-muted); margin: 0; }
+
+  /* ---------- Pricing ---------- */
+  .pricing {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+  @media (max-width: 660px) { .pricing { grid-template-columns: 1fr; } }
+
+  .price-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+  }
+  .price-card.pro {
+    border-color: rgba(76,175,80,0.4);
+    background: linear-gradient(180deg, rgba(76,175,80,0.06), var(--bg-card) 40%);
+    position: relative;
+  }
+  .price-badge {
+    position: absolute;
+    top: -12px;
+    right: 24px;
+    background: var(--pro);
+    color: #07220c;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 100px;
+  }
+  .price-card h3 { font-size: 18px; margin: 0 0 4px; }
+  .price-card .desc { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+  .price-amount { font-size: 38px; font-weight: 800; margin-bottom: 4px; }
+  .price-amount span { font-size: 15px; font-weight: 500; color: var(--text-muted); }
+  .price-card ul { list-style: none; padding: 0; margin: 24px 0 28px; }
+  .price-card li {
+    font-size: 14px;
+    color: var(--text);
+    padding: 7px 0;
+    padding-left: 26px;
+    position: relative;
+  }
+  .price-card li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .price-card.pro li::before { color: var(--pro); }
+  .price-card .btn { width: 100%; }
+
+  /* ---------- Contact ---------- */
+  .contact-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 800px) { .contact-wrap { grid-template-columns: 1fr; } }
+
+  .contact-info h2 { text-align: left; margin-bottom: 14px; }
+  .contact-info p { color: var(--text-muted); font-size: 15px; margin-bottom: 24px; }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  .contact-item .ico {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent);
+    flex: none;
+  }
+
+  form {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+  }
+  .field { margin-bottom: 18px; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 7px;
+    color: var(--text);
+  }
+  .field input, .field textarea {
+    width: 100%;
+    padding: 11px 13px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+  }
+  .field input:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+  .form-status {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--accent);
+    display: none;
+  }
+  .form-status.show { display: block; }
+
+  /* ---------- Footer ---------- */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+  }
+  .footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo">
+      <span class="logo-mark"></span>
+      Pine Node Editor
+    </div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-primary">Get in touch</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow">⚡ For TradingView traders</span>
+    <h1>Build Pine Script strategies<br><span class="grad">without writing code</span></h1>
+    <p class="sub">
+      Pine Node Editor is a visual, node-based canvas for TradingView strategies.
+      Drag in indicators and conditions, wire up your logic, and export clean,
+      ready-to-paste Pine Script v6 — no syntax, no boilerplate.
+    </p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn btn-primary btn-lg">Request early access</a>
+      <a href="#how" class="btn btn-lg">See how it works</a>
+    </div>
+    <div class="hero-note">Free tier available · Pro from €10/month</div>
+
+    <div class="mockup">
+      <div class="mockup-bar">
+        <span class="mockup-dot"></span><span class="mockup-dot"></span><span class="mockup-dot"></span>
+      </div>
+      <div class="mockup-body">
+        <div class="mockup-side">
+          <div class="grp">Input</div>
+          <div class="item on">Price Source</div>
+          <div class="item">Script Input</div>
+          <div class="grp">Indicators</div>
+          <div class="item on">RSI</div>
+          <div class="item">EMA / SMA</div>
+          <div class="item">MACD</div>
+          <div class="grp">Conditions</div>
+          <div class="item on">Compare</div>
+          <div class="grp">Actions</div>
+          <div class="item">Long / Short</div>
+        </div>
+        <div class="mockup-canvas">
+          <svg class="wires" viewBox="0 0 620 300" preserveAspectRatio="none">
+            <path d="M160,58 C190,58 190,58 220,58"></path>
+            <path d="M160,58 C190,58 190,190 220,192"></path>
+            <path d="M360,58 C390,58 390,120 420,122"></path>
+            <path d="M360,192 C390,192 390,140 420,140"></path>
+          </svg>
+          <div class="node n1">
+            <div class="hd">Price Source</div>
+            <div class="bd"><div class="row"><span>close</span><span class="port"></span></div></div>
+          </div>
+          <div class="node n2">
+            <div class="hd">RSI</div>
+            <div class="bd"><div class="row"><span>length 14</span><span class="port"></span></div></div>
+          </div>
+          <div class="node n3">
+            <div class="hd">EMA</div>
+            <div class="bd"><div class="row"><span>length 50</span><span class="port"></span></div></div>
+          </div>
+          <div class="node n4">
+            <div class="hd">Compare &gt;</div>
+            <div class="bd"><div class="row"><span>a &gt; b</span><span class="port"></span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Features</div>
+      <h2>Everything you need to prototype a strategy</h2>
+      <p>A visual layer over Pine Script that keeps you in control of the logic, without touching syntax.</p>
+    </div>
+    <div class="grid-features">
+      <div class="feature-card">
+        <div class="feature-icon">◆</div>
+        <h3>Visual node canvas</h3>
+        <p>Drag nodes onto the canvas and connect them like a flowchart — indicators, conditions, and actions all as reusable blocks.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">≡</div>
+        <h3>Full indicator library</h3>
+        <p>RSI, MACD, EMA/SMA, Bollinger Bands, ATR and more — configure parameters directly on each node, no lookup tables needed.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⇄</div>
+        <h3>Logic & conditions</h3>
+        <p>Compare series, combine signals with AND/OR, and branch entries and exits without writing a single if-statement.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">▤</div>
+        <h3>One-click Pine Script export</h3>
+        <p>Compile your graph straight to Pine Script v6, ready to paste into TradingView's editor and run.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⤓</div>
+        <h3>Save & reload graphs</h3>
+        <p>Your strategy graphs are saved locally in the browser, so you can pick up exactly where you left off.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⌘</div>
+        <h3>Runs where you already work</h3>
+        <p>A lightweight Chrome extension — no separate app to install, no account required to get started.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how" style="background: var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">How it works</div>
+      <h2>From idea to Pine Script in three steps</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Drag in nodes</h3>
+        <p>Pick a price source, add indicators like RSI or EMA, and drop them onto the canvas.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>Wire up your logic</h3>
+        <p>Connect outputs to conditions, combine signals, and define your entry and exit rules visually.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>Export & run</h3>
+        <p>Compile to Pine Script v6 with one click and paste it straight into TradingView's Pine Editor.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Pricing</div>
+      <h2>Start free, upgrade when you need more</h2>
+      <p>No lifetime deals, no hidden fees — a single Pro plan that unlocks the full node catalog and export.</p>
+    </div>
+    <div class="pricing">
+      <div class="price-card">
+        <h3>Free</h3>
+        <div class="desc">For getting familiar with the editor</div>
+        <div class="price-amount">€0</div>
+        <ul>
+          <li>Core node palette</li>
+          <li>Visual canvas & wiring</li>
+          <li>Local graph saving</li>
+          <li>Basic indicators & conditions</li>
+        </ul>
+        <a href="#contact" class="btn">Get started</a>
+      </div>
+      <div class="price-card pro">
+        <span class="price-badge">Pro</span>
+        <h3>Pro</h3>
+        <div class="desc">For traders shipping real strategies</div>
+        <div class="price-amount">€10<span>/month</span></div>
+        <ul>
+          <li>Full node catalog</li>
+          <li>Pine Script compile & export</li>
+          <li>Graph import / export</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="#contact" class="btn btn-primary">Go Pro</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="background: var(--bg-alt);">
+  <div class="wrap">
+    <div class="contact-wrap">
+      <div class="contact-info">
+        <div class="kicker">Contact</div>
+        <h2>Get in touch</h2>
+        <p>Questions, feature requests, or bug reports — send a message and it'll land straight in our inbox.</p>
+        <div class="contact-item">
+          <span class="ico">✉</span>
+          <span id="contact-email">cjzexa@gmail.com</span>
+        </div>
+        <div class="contact-item">
+          <span class="ico">↻</span>
+          <span>We usually reply within 1-2 business days</span>
+        </div>
+      </div>
+
+      <form id="feedback-form">
+        <div class="form-row">
+          <div class="field">
+            <label for="f-name">Name</label>
+            <input type="text" id="f-name" name="name" required placeholder="Jane Trader">
+          </div>
+          <div class="field">
+            <label for="f-email">Email</label>
+            <input type="email" id="f-email" name="email" required placeholder="you@example.com">
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-subject">Subject</label>
+          <input type="text" id="f-subject" name="subject" placeholder="Feature request, bug report, feedback...">
+        </div>
+        <div class="field">
+          <label for="f-message">Message</label>
+          <textarea id="f-message" name="message" rows="5" required placeholder="Tell us what's on your mind..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Send message</button>
+        <div class="form-status" id="form-status">Opening your email client with this message pre-filled...</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-row">
+      <div>© <span id="year"></span> Pine Node Editor. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  var CONTACT_EMAIL = 'cjzexa@gmail.com';
+
+  document.getElementById('feedback-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = document.getElementById('f-name').value.trim();
+    var email = document.getElementById('f-email').value.trim();
+    var subject = document.getElementById('f-subject').value.trim() || 'Pine Node Editor — website message';
+    var message = document.getElementById('f-message').value.trim();
+
+    var body = 'From: ' + name + ' (' + email + ')\n\n' + message;
+    var mailto = 'mailto:' + encodeURIComponent(CONTACT_EMAIL) +
+      '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+
+    window.location.href = mailto;
+
+    var status = document.getElementById('form-status');
+    status.classList.add('show');
+  });
+</script>
+
+</body>
+</html>
