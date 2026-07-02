@@ -277,8 +277,18 @@
     color: #cfe8f5;
   }
   .node .bd { padding: 8px 10px; color: var(--text-muted); }
-  .node .bd .row { display:flex; justify-content: space-between; padding: 3px 0; }
-  .node .port { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display:inline-block; }
+  .node .bd .row { display:flex; align-items: center; gap: 6px; justify-content: space-between; padding: 3px 0; }
+  .node .bd .row.in { justify-content: flex-start; }
+  .node .port {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent); display:inline-block; flex: none;
+    animation: portPulse 2.6s ease-in-out infinite;
+  }
+  .node .port.out { order: 2; }
+  @keyframes portPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(79,195,247,0.4); }
+    50% { box-shadow: 0 0 7px 2px rgba(79,195,247,0.5); }
+  }
 
   .n1 { top: 34px; left: 20px; }
   .n1 .hd { background: #2a3f5f; }
@@ -289,8 +299,16 @@
   .n4 { top: 100px; left: 420px; }
   .n4 .hd { background: #2a5f3f; }
 
-  svg.wires { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-  svg.wires path { fill: none; stroke: var(--accent); stroke-width: 1.6; opacity: 0.55; }
+  svg.wires { position: absolute; top: 0; left: 0; pointer-events: none; overflow: visible; }
+  svg.wires path {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.6;
+    opacity: 0.6;
+    stroke-dasharray: 5 6;
+    animation: wireFlow 1s linear infinite;
+  }
+  @keyframes wireFlow { to { stroke-dashoffset: -22; } }
 
   @media (max-width: 760px) {
     .mockup-body { grid-template-columns: 1fr; }
@@ -581,28 +599,32 @@
           <div class="grp">Actions</div>
           <div class="item">Long / Short</div>
         </div>
-        <div class="mockup-canvas">
-          <svg class="wires" viewBox="0 0 620 300" preserveAspectRatio="none">
-            <path d="M160,58 C190,58 190,58 220,58"></path>
-            <path d="M160,58 C190,58 190,190 220,192"></path>
-            <path d="M360,58 C390,58 390,120 420,122"></path>
-            <path d="M360,192 C390,192 390,140 420,140"></path>
-          </svg>
+        <div class="mockup-canvas" id="mockup-canvas">
+          <svg class="wires" id="mockup-wires"></svg>
           <div class="node n1">
             <div class="hd">Price Source</div>
-            <div class="bd"><div class="row"><span>close</span><span class="port"></span></div></div>
+            <div class="bd"><div class="row"><span>close</span><span class="port out" id="port-price-out"></span></div></div>
           </div>
           <div class="node n2">
             <div class="hd">RSI</div>
-            <div class="bd"><div class="row"><span>length 14</span><span class="port"></span></div></div>
+            <div class="bd">
+              <div class="row in"><span class="port" id="port-rsi-in"></span><span>source</span></div>
+              <div class="row"><span>length 14</span><span class="port out" id="port-rsi-out"></span></div>
+            </div>
           </div>
           <div class="node n3">
             <div class="hd">EMA</div>
-            <div class="bd"><div class="row"><span>length 50</span><span class="port"></span></div></div>
+            <div class="bd">
+              <div class="row in"><span class="port" id="port-ema-in"></span><span>source</span></div>
+              <div class="row"><span>length 50</span><span class="port out" id="port-ema-out"></span></div>
+            </div>
           </div>
           <div class="node n4">
             <div class="hd">Compare &gt;</div>
-            <div class="bd"><div class="row"><span>a &gt; b</span><span class="port"></span></div></div>
+            <div class="bd">
+              <div class="row in"><span class="port" id="port-cmp-a"></span><span>a</span></div>
+              <div class="row in"><span class="port" id="port-cmp-b"></span><span>b</span></div>
+            </div>
           </div>
         </div>
       </div>
@@ -773,6 +795,53 @@
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  (function () {
+    var canvas = document.getElementById('mockup-canvas');
+    var svg = document.getElementById('mockup-wires');
+    var wires = [
+      ['port-price-out', 'port-rsi-in'],
+      ['port-price-out', 'port-ema-in'],
+      ['port-rsi-out', 'port-cmp-a'],
+      ['port-ema-out', 'port-cmp-b'],
+    ];
+
+    function portCenter(id) {
+      var el = document.getElementById(id);
+      var pr = el.getBoundingClientRect();
+      var cr = canvas.getBoundingClientRect();
+      return { x: pr.left + pr.width / 2 - cr.left, y: pr.top + pr.height / 2 - cr.top };
+    }
+
+    function drawWires() {
+      var w = canvas.clientWidth;
+      var h = canvas.clientHeight;
+      svg.setAttribute('width', w);
+      svg.setAttribute('height', h);
+      svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+      svg.innerHTML = '';
+      wires.forEach(function (pair) {
+        var a = portCenter(pair[0]);
+        var b = portCenter(pair[1]);
+        var dx = Math.max(40, Math.abs(b.x - a.x) * 0.5);
+        var d = 'M' + a.x + ',' + a.y +
+          ' C' + (a.x + dx) + ',' + a.y +
+          ' ' + (b.x - dx) + ',' + b.y +
+          ' ' + b.x + ',' + b.y;
+        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', d);
+        svg.appendChild(path);
+      });
+    }
+
+    if (window.ResizeObserver) {
+      new ResizeObserver(drawWires).observe(canvas);
+    } else {
+      window.addEventListener('resize', drawWires);
+    }
+    window.addEventListener('load', drawWires);
+    drawWires();
+  })();
 
   var CONTACT_EMAIL = 'cjzexa@gmail.com';
 
