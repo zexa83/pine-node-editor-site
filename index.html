@@ -298,6 +298,8 @@
   .n3 .hd { background: #5f3f2a; }
   .n4 { top: 100px; left: 420px; }
   .n4 .hd { background: #2a5f3f; }
+  .n5 { top: 100px; left: 640px; }
+  .n5 .hd { background: #1a4d2e; }
 
   svg.wires { position: absolute; top: 0; left: 0; pointer-events: none; overflow: visible; }
   svg.wires path {
@@ -313,8 +315,9 @@
   @media (max-width: 760px) {
     .mockup-body { grid-template-columns: 1fr; }
     .mockup-side { display: none; }
-    .mockup-canvas { min-height: 260px; }
+    .mockup-canvas { min-height: 460px; }
     .n4 { left: 220px; top: 250px; }
+    .n5 { left: 220px; top: 420px; }
   }
 
   /* ---------- Sections ---------- */
@@ -624,6 +627,14 @@
             <div class="bd">
               <div class="row in"><span class="port" id="port-cmp-a"></span><span>a</span></div>
               <div class="row in"><span class="port" id="port-cmp-b"></span><span>b</span></div>
+              <div class="row"><span>result</span><span class="port out" id="port-cmp-out"></span></div>
+            </div>
+          </div>
+          <div class="node n5">
+            <div class="hd">Long Signal</div>
+            <div class="bd">
+              <div class="row in"><span class="port" id="port-long-trigger"></span><span>trigger</span></div>
+              <div class="row"><span>signal</span><span class="port out" id="port-long-out"></span></div>
             </div>
           </div>
         </div>
@@ -804,6 +815,7 @@
       ['port-price-out', 'port-ema-in'],
       ['port-rsi-out', 'port-cmp-a'],
       ['port-ema-out', 'port-cmp-b'],
+      ['port-cmp-out', 'port-long-trigger'],
     ];
 
     function portCenter(id) {
@@ -841,6 +853,50 @@
     }
     window.addEventListener('load', drawWires);
     drawWires();
+
+    // Let visitors drag the mockup nodes around by their header, just like
+    // the real editor - purely cosmetic, no persistence, resets on reload.
+    canvas.querySelectorAll('.node').forEach(function (node) {
+      var handle = node.querySelector('.hd');
+      handle.style.cursor = 'grab';
+      var dragging = false, startX, startY, startLeft, startTop;
+
+      function start(e) {
+        dragging = true;
+        node.style.zIndex = 5;
+        handle.style.cursor = 'grabbing';
+        var pt = e.touches ? e.touches[0] : e;
+        startX = pt.clientX;
+        startY = pt.clientY;
+        var rect = node.getBoundingClientRect();
+        var cRect = canvas.getBoundingClientRect();
+        startLeft = rect.left - cRect.left;
+        startTop = rect.top - cRect.top;
+        e.preventDefault();
+      }
+      function move(e) {
+        if (!dragging) return;
+        var pt = e.touches ? e.touches[0] : e;
+        var dx = pt.clientX - startX;
+        var dy = pt.clientY - startY;
+        var maxLeft = Math.max(0, canvas.clientWidth - node.offsetWidth);
+        var maxTop = Math.max(0, canvas.clientHeight - node.offsetHeight);
+        node.style.left = Math.min(Math.max(0, startLeft + dx), maxLeft) + 'px';
+        node.style.top = Math.min(Math.max(0, startTop + dy), maxTop) + 'px';
+        drawWires();
+      }
+      function end() {
+        dragging = false;
+        handle.style.cursor = 'grab';
+      }
+
+      handle.addEventListener('mousedown', start);
+      handle.addEventListener('touchstart', start, { passive: false });
+      window.addEventListener('mousemove', move);
+      window.addEventListener('touchmove', move, { passive: false });
+      window.addEventListener('mouseup', end);
+      window.addEventListener('touchend', end);
+    });
   })();
 
   var CONTACT_EMAIL = 'cjzexa@gmail.com';
