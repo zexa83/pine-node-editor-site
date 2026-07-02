@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pine Node Editor — Visual Strategy Builder for TradingView</title>
 <meta name="description" content="Build TradingView strategies by wiring nodes together — no Pine Script coding required. Export clean, ready-to-paste Pine Script v6 in seconds.">
-<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAERElEQVR4nJxWS2wTRxher9deO2uzjhMcwHFSp6TEUSiioeZCeBSpShW1FVIrVRVST5zg0MclF06VeonUHnpqL5XaU1u1lXpAIKVNWoGAA8FCIZglgRiIY5v4GXuzfuwMY88+ZncdYtjDaPzPzP9///e/zEAIqda3JcPZ9dqjTTmxWS/VAJBldAQAoCCU5eaKRE2JDLC8tSfvyDxrD/tcB3q7zoz2eZx2rNaGDdwtyr88lAqSrLxEKwB4r2x0OdauLi2JdoBP/W7mi2PhaMinGFgqyt/HRQKdgrRz7JQu10+/eS9ydKCbFhvw5xWpaVkmMOq6gO6TJlG145uU4ZXu98y/QklqMNc36oWabMWFX0ISl3GPPaMMtkkOYWZTuhJPMSiqhveqfQgJ3iHBu6oFajcB4StQJLCJACwmC8xKsa7z/pLYDQgMp8raNLCBMweYsEML74DETlkzCuo+Uao3yYLIdMh7l8M2EeoO+9zo58NcZXY5I8pteNdjrq5Mh7xfODKAKgjXTrSfH9/HX7yy1JZ3VY2igdawa3HDe51ZAMI8q2nH33AvF+52G24Ca2YjbgDdSb6Hdrkoy9fPuyER5xZ22VpPTCc5kyxtWQ08LVS2452MKw2x5fY+KiiEjfLTfJnUvhgXYrFYk1VZzxlrPTVjsB3vWr6jpd6QP73w1aV/5otiFVX/1eX0+a9n7v71Q3blTlveybgyneR7avHmavzOxZ+cQ2uuVsIAfuITrvDj1u3L02dOHBnZ73U7EtnyHwuP/ouvmeqJ2bHPNGrS6vyfdicbOvYB9gzdsdHM/qlzn4/7T0fHMGkje/jpyUNCMreWL5NxpbfjXdsnrl6qi+Xg0XcZF6fke4t3m40+FX2LDIydtr0TCaralLgyL+4zYi6zvjDP8j19bx4Hxj4T5N20zZxaA36PoZ5aldyG99Hd3HjQF+CcS7E8e/hQLvQ2emzqM4+z5XK14WEZ0kAs8cyURfaRj86bsI8FPNMnh1/v4fZ4XQeHhz5+fyohOVApWPNdrNaj4YBeGfnKd5dvoZQj48qQ2DHGyTcCJscnI3tvJTasfebv2GqqWJkY3su7HUKq8OuN+2K1YepjjJX3QZ/bZGCwm7NUkBLDG8upa/eT28xtnEWWuZosSe26gvxqc5vWak+7MbecNhmYjScNfQYASw8G5l6gxpXxsfacWCPn6tyDDFo/HOsPeF3p0tbvC6v/CykLRq1WQdv5gb3sQUn2ms+VrVRNlueE9Oy9dYrgmuS987k9GvTTQ3huqCzt2N874V2La2Sfn5460Ms56JZUaTRt5tRL8o7j6mEdZ4+P0n0e9suJsD5Xd+rvZJ95cR/79rOToR6v8uf35uP8zJyQQQlqzuhX+Z+62+ueOXvi1NgApf27Rh9qLL/dfrK4XhTSpWxZUhHpsVEKXvNPY0nF7ueckaD/8GDg3OmDu7pYrPY5AAAA//8kesT0AAAABklEQVQDAJTGvvI4l+dpAAAAAElFTkSuQmCC">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEAUlEQVR4nKyXW2zbVBjH/z522zWXpqXQZinNspVWU1eq8jJlSEgwgQYVD5Ngj2MIIQESL7zxggSCN5B4QpoQ9KkIiWkak0AbgzHERWJsYpl2v3XRliVts6buUuW22N6xUzeOfY5rdzsPsX/xyXe+/3c5J5ZgGYlEortSwwcCEZKaqk0IAvpUVYNAbzRNv8K4An4Z85RSFP+t16QvZTktm2sK5k30yaFXoCnfCBBiKz9aHV64sZgnzqpQ3l7Mzx5ZdWDjYGKXpuDowyv1zirUSd0JIR6P99QUcoEq37ge5W6RoHcr3zM5W6+Rp8l9hewzF7fkDDxuGmGzdb7bld7FpHblDYliElrTMzMNPG4NqzfWnbRzw3UtSehn8mGVrsXcqyYkhWgsoVlzaB2POOdMlhpG/FWzGOpG3849CA+PG0aK184hd+x7aOWi524wnTEi4Ffp6CfT6N62vWVO8eoZnP1wj2flJhO/OQ8+Ne5YXB/hkWcQ2jLmpfpb7JKmZ+xqt3No8yh4o3PTiLfqt9gjfqu/fOcG1wH9GUupGxO/fX7vagqlXNqxeHUxj/tFGSylbiwGQ5GPm0o9dINSB2lrR0ffgGFAqZRR+P8PFE6fQNfIBCr5O6gvy45qN7vNzkJfNO66D9j7vHNwGP0vvI6ly6dROHlsVYkgSujf+RoCm7ehozeKUGIrpHAPSrevIHP4W+T//hmsbqAODGqeTzFJxMDud4wI3PrhKyq/1vqcEEx8/iPCQ2MtQtR6HafefxEVmjrrvmPUgJ+9vWs0ibZgxAh3Y3HAWu0qp0uIRKPz/G5HdxnP7H3OYxIIo3v8WVQLc1i+lmL2eWBgixEF1gjEhhxdpQ+pmROn8sj4Djy2/SVs6B+kOW6DQosrd3Sa2+flzHVagEuQQhGHA4sXTjK7TeJVf2TiOYx9NOUwlDt+ANV81qakWd03p7/A8LuftvymlE1j/sRBS0QFawTYOY+9ug+sEZvcC/nMny1KrNWdPTKN6t0cHt/xMqSuHizPXETm0Ne0XUvMGpB41R9MsLfcYHwrU7lV2cKp33D3v19tf2Y0JhPe3l3OzjAdKGduuO7tfpnwTq254weZDsz+fmDlrnX+WmcIj8VAsOs9vX3tkSilL6E8l0FndBPIhiA9aGYwM/UZ8n/95FDO48bgM50/J/Q+EdPfB3b5/SfDy6kfpuZ+IfQjxetreDjP18MG6c6oSBGFqPspy/YaALyzn5xb1pHbRGU/kWdn0xDUt9yUrsVuSnksaHhTpm+pxsa9MJ87pL+rUdNZt0isR6mDNS1LQCaLxYXDOoqmX5XS8vWO9t4pIqo1OrdKjYXp10E/kXDheYr/0BeR7yRR2bu0VDhvrvsAAAD//xjU7rIAAAAGSURBVAMAzItzOqWHPTYAAAAASUVORK5CYII=">
 <style>
   :root {
     --bg: #0e0f13;
@@ -77,19 +77,9 @@
   .logo-mark {
     width: 26px;
     height: 26px;
-    border-radius: 7px;
-    background: linear-gradient(135deg, var(--accent), #2e7cad);
-    position: relative;
     flex: none;
+    display: block;
   }
-  .logo-mark::before, .logo-mark::after {
-    content: "";
-    position: absolute;
-    background: #0e0f13;
-    border-radius: 1px;
-  }
-  .logo-mark::before { width: 3px; height: 3px; top: 6px; left: 6px; box-shadow: 6px 0 0 #0e0f13, 0 12px 0 #0e0f13, 6px 12px 0 #0e0f13; }
-  .logo-mark::after { width: 12px; height: 2px; top: 12px; left: 7px; background: #0e0f13; opacity: .8; }
 
   .nav-links {
     display: flex;
@@ -232,7 +222,7 @@
   .mockup-body {
     display: grid;
     grid-template-columns: 160px 1fr;
-    min-height: 360px;
+    min-height: 420px;
   }
   .mockup-side {
     border-right: 1px solid var(--border);
@@ -309,15 +299,15 @@
     50% { box-shadow: 0 0 7px 2px rgba(79,195,247,0.5); }
   }
 
-  .n1 { top: 34px; left: 20px; }
+  .n1 { top: 40px; left: 20px; }
   .n1 .hd { background: #2a3f5f; }
-  .n2 { top: 34px; left: 220px; }
+  .n2 { top: 90px; left: 220px; }
   .n2 .hd { background: #3f2a5f; }
-  .n3 { top: 168px; left: 220px; }
+  .n3 { top: 280px; left: 220px; }
   .n3 .hd { background: #5f3f2a; }
-  .n4 { top: 100px; left: 420px; }
+  .n4 { top: 160px; left: 420px; }
   .n4 .hd { background: #2a5f3f; }
-  .n5 { top: 100px; left: 640px; }
+  .n5 { top: 50px; left: 640px; }
   .n5 .hd { background: #1a4d2e; }
 
   svg.wires { position: absolute; top: 0; left: 0; pointer-events: none; overflow: visible; }
@@ -334,9 +324,17 @@
   @media (max-width: 760px) {
     .mockup-body { grid-template-columns: 1fr; }
     .mockup-side { display: none; }
-    .mockup-canvas { min-height: 460px; }
-    .n4 { left: 220px; top: 250px; }
-    .n5 { left: 220px; top: 420px; }
+    .mockup-canvas { min-height: 740px; }
+    /* Fixed pixel columns (20/220/420/640) only work on a wide desktop
+       canvas - on a narrow phone viewport they'd run off the right edge and
+       get clipped. Stack the same 5 nodes into a single centered vertical
+       pipeline instead, in data-flow order, so nothing gets cut off. */
+    .n1, .n2, .n3, .n4, .n5 { left: 50%; transform: translateX(-70px); }
+    .n1 { top: 20px; }
+    .n2 { top: 145px; }
+    .n3 { top: 285px; }
+    .n4 { top: 425px; }
+    .n5 { top: 605px; }
   }
 
   /* ---------- Sections ---------- */
@@ -573,7 +571,22 @@
 <header>
   <nav>
     <div class="logo">
-      <span class="logo-mark"></span>
+      <svg class="logo-mark" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#1a1c22"/>
+            <stop offset="1" stop-color="#0b0d12"/>
+          </linearGradient>
+        </defs>
+        <rect width="128" height="128" rx="28" fill="url(#logoGrad)"/>
+        <g stroke="#4fc3f7" stroke-width="6" stroke-linecap="round" opacity="0.55">
+          <line x1="38" y1="90" x2="64" y2="46"/>
+          <line x1="64" y1="46" x2="93" y2="73"/>
+        </g>
+        <circle cx="38" cy="90" r="13.5" fill="#4fc3f7"/>
+        <circle cx="64" cy="46" r="13.5" fill="#4fc3f7"/>
+        <circle cx="93" cy="73" r="13.5" fill="#4fc3f7"/>
+      </svg>
       Pine Node Editor
     </div>
     <div class="nav-links">
@@ -892,6 +905,13 @@
         var cRect = canvas.getBoundingClientRect();
         startLeft = rect.left - cRect.left;
         startTop = rect.top - cRect.top;
+        // Mobile nodes are centered via left:50%+transform (fixed pixel
+        // columns don't fit a narrow viewport) - switch to plain pixel
+        // positioning up front so the transform doesn't double-offset once
+        // we start writing inline left/top below.
+        node.style.transform = 'none';
+        node.style.left = startLeft + 'px';
+        node.style.top = startTop + 'px';
         e.preventDefault();
       }
       function move(e) {
