@@ -226,6 +226,12 @@ h1{ font-size:42px; font-weight:800; letter-spacing:-.8px; margin:0 0 16px; }
   gap:0; padding:30px 20px;
   flex-wrap:nowrap; overflow:hidden;
 }
+/* The 4 nodes + arrows need ~530px to lay out in one row - narrower than
+   that, centering + overflow:hidden was silently clipping the first/last
+   node instead of showing them. Let the strip scroll horizontally instead. */
+@media (max-width:560px){
+  .pipeline{ justify-content:flex-start; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+}
 .pipe-node{
   background:#1e2129;
   border:1px solid var(--border);
@@ -590,7 +596,7 @@ kbd{
       </div>
       <div style="padding:28px 16px; display:flex; flex-direction:column; gap:20px;">
         <!-- pipeline diagram -->
-        <div class="pipeline" style="background:var(--bg); border-radius:10px; border:1px solid var(--border); padding:20px 12px; gap:0; flex-wrap:nowrap; justify-content:center; align-items:center;">
+        <div class="pipeline" style="background:var(--bg); border-radius:10px; border:1px solid var(--border); padding:20px 12px;">
           <div class="pipe-node">
             <div class="hd" style="background:var(--c-input)">Price Source</div>
             <div class="bd">close</div>
