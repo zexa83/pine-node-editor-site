@@ -243,7 +243,9 @@ h1{ font-size:42px; font-weight:800; letter-spacing:-.8px; margin:0 0 16px; }
    or clipping. */
 .pipeline-track{
   display:flex; align-items:center; flex:none;
-  transform-origin:center top;
+  /* scale around the middle so the shrunk row stays vertically centered
+     in the box instead of drifting to the top */
+  transform-origin:center center;
 }
 .pipe-node{
   background:#1e2129;
@@ -710,9 +712,9 @@ kbd{
         <div class="vis-label">Connecting nodes</div>
       </div>
       <div class="vis-body">
-        <div class="vis-stage" id="step3-stage">
+        <div class="vis-stage" id="step3-stage" data-center>
         <!-- EMA node -->
-        <div class="nd" style="left:20px; top:60px;">
+        <div class="nd" style="left:15px; top:55px;">
           <div class="hd" style="background:var(--c-indicator)">EMA</div>
           <div class="bd">
             <div class="row in"><span class="pt series"></span> source</div>
@@ -720,7 +722,7 @@ kbd{
           </div>
         </div>
         <!-- Compare node -->
-        <div class="nd" style="left:185px; top:90px;">
+        <div class="nd" style="left:180px; top:85px;">
           <div class="hd" style="background:var(--c-condition)">Compare</div>
           <div class="bd">
             <div class="row in"><span class="pt series" id="p-cmp-a"></span> A</div>
@@ -729,7 +731,7 @@ kbd{
           </div>
         </div>
         <!-- Long Signal node -->
-        <div class="nd" style="left:340px; top:165px;">
+        <div class="nd" style="left:335px; top:160px;">
           <div class="hd" style="background:var(--c-action-l)">Long Signal</div>
           <div class="bd">
             <div class="row in"><span class="pt bool" id="p-long-in"></span> trigger</div>
@@ -910,16 +912,24 @@ v_n1_value = <span class="fn">ta.ema</span>(close, v_n1_period)
   var STAGE_W = 480, STAGE_H = 280;
   document.querySelectorAll('.vis-stage').forEach(function (stage) {
     var body = stage.parentElement;
+    // data-center stages (free-floating compositions like step 3) stay at
+    // the design width and are centered with a breathing margin. The others
+    // stretch to the body width, because they have chrome anchored to the
+    // window edges (step 2's palette at left:0, step 4's panel at right:0).
+    var centered = stage.hasAttribute('data-center');
+    var PAD = centered ? 14 : 0;
     function fit() {
       var w = body.clientWidth;
-      if (w >= STAGE_W) {
+      if (!centered && w >= STAGE_W) {
         stage.style.width = w + 'px';
         stage.style.transform = 'none';
         body.style.height = STAGE_H + 'px';
       } else {
+        var k = Math.min(1, (w - PAD * 2) / STAGE_W);
         stage.style.width = STAGE_W + 'px';
-        stage.style.transform = 'scale(' + (w / STAGE_W) + ')';
-        body.style.height = Math.round(STAGE_H * (w / STAGE_W)) + 'px';
+        stage.style.transform = 'scale(' + k + ')';
+        stage.style.left = Math.round((w - STAGE_W * k) / 2) + 'px';
+        body.style.height = Math.round(STAGE_H * k) + 'px';
       }
     }
     if (window.ResizeObserver) new ResizeObserver(fit).observe(body);
