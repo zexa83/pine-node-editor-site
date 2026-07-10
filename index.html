@@ -227,7 +227,6 @@
   .mockup-body {
     display: grid;
     grid-template-columns: 160px 1fr;
-    min-height: 420px;
   }
   .mockup-side {
     border-right: 1px solid var(--border);
@@ -270,9 +269,23 @@
 
   .mockup-canvas {
     position: relative;
+    overflow: hidden;
+    height: 420px; /* JS shrinks this in step with the stage scale */
     background:
       radial-gradient(circle at 1px 1px, #23252d 1px, transparent 0) 0 0/22px 22px,
       var(--bg);
+  }
+
+  /* Fixed 780x420 design surface holding the nodes. On canvases narrower
+     than the design width, JS scales the whole stage down uniformly — the
+     desktop composition shrinks instead of re-flowing into a column. */
+  .mockup-stage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 780px;
+    height: 420px;
+    transform-origin: 0 0;
   }
 
   .node {
@@ -329,17 +342,6 @@
   @media (max-width: 760px) {
     .mockup-body { grid-template-columns: 1fr; }
     .mockup-side { display: none; }
-    .mockup-canvas { min-height: 740px; }
-    /* Fixed pixel columns (20/220/420/640) only work on a wide desktop
-       canvas - on a narrow phone viewport they'd run off the right edge and
-       get clipped. Stack the same 5 nodes into a single centered vertical
-       pipeline instead, in data-flow order, so nothing gets cut off. */
-    .n1, .n2, .n3, .n4, .n5 { left: 50%; transform: translateX(-70px); }
-    .n1 { top: 20px; }
-    .n2 { top: 145px; }
-    .n3 { top: 285px; }
-    .n4 { top: 425px; }
-    .n5 { top: 605px; }
   }
 
   /* ---------- Sections ---------- */
@@ -582,6 +584,7 @@
           <div class="item">Long / Short</div>
         </div>
         <div class="mockup-canvas" id="mockup-canvas">
+          <div class="mockup-stage" id="mockup-stage">
           <pre class="mockup-code" id="mockup-code"></pre>
           <svg class="wires" id="mockup-wires"></svg>
           <div class="node n1">
@@ -616,6 +619,7 @@
               <div class="row in"><span class="port" id="port-long-trigger"></span><span>trigger</span></div>
               <div class="row"><span>signal</span><span class="port out" id="port-long-out"></span></div>
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -768,7 +772,9 @@
 
   (function () {
     var canvas = document.getElementById('mockup-canvas');
+    var stage = document.getElementById('mockup-stage');
     var svg = document.getElementById('mockup-wires');
+    var STAGE_W = 780, STAGE_H = 420;
     var wires = [
       ['port-price-out', 'port-rsi-in'],
       ['port-price-out', 'port-ema-in'],
@@ -777,23 +783,37 @@
       ['port-cmp-out', 'port-long-trigger'],
     ];
 
-    function portCenter(id) {
-      var el = document.getElementById(id);
-      var pr = el.getBoundingClientRect();
-      var cr = canvas.getBoundingClientRect();
-      return { x: pr.left + pr.width / 2 - cr.left, y: pr.top + pr.height / 2 - cr.top };
+    function scaleK() {
+      return stage.getBoundingClientRect().width / STAGE_W;
+    }
+
+    // Shrink the whole stage uniformly when the canvas is narrower than the
+    // 780px design width - the desktop composition just gets smaller, so the
+    // wires keep their shape instead of contorting around stacked nodes.
+    function fit() {
+      var k = Math.min(1, canvas.clientWidth / STAGE_W);
+      stage.style.transform = 'scale(' + k + ')';
+      canvas.style.height = Math.round(STAGE_H * k) + 'px';
+    }
+
+    function portCenter(id, k, sr) {
+      var pr = document.getElementById(id).getBoundingClientRect();
+      return {
+        x: (pr.left + pr.width / 2 - sr.left) / k,
+        y: (pr.top + pr.height / 2 - sr.top) / k,
+      };
     }
 
     function drawWires() {
-      var w = canvas.clientWidth;
-      var h = canvas.clientHeight;
-      svg.setAttribute('width', w);
-      svg.setAttribute('height', h);
-      svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+      var sr = stage.getBoundingClientRect();
+      var k = sr.width / STAGE_W;
+      svg.setAttribute('width', STAGE_W);
+      svg.setAttribute('height', STAGE_H);
+      svg.setAttribute('viewBox', '0 0 ' + STAGE_W + ' ' + STAGE_H);
       svg.innerHTML = '';
       wires.forEach(function (pair) {
-        var a = portCenter(pair[0]);
-        var b = portCenter(pair[1]);
+        var a = portCenter(pair[0], k, sr);
+        var b = portCenter(pair[1], k, sr);
         var dx = Math.max(40, Math.abs(b.x - a.x) * 0.5);
         var d = 'M' + a.x + ',' + a.y +
           ' C' + (a.x + dx) + ',' + a.y +
@@ -806,15 +826,18 @@
     }
 
     if (window.ResizeObserver) {
-      new ResizeObserver(drawWires).observe(canvas);
+      new ResizeObserver(fit).observe(canvas);
     } else {
-      window.addEventListener('resize', drawWires);
+      window.addEventListener('resize', fit);
     }
-    window.addEventListener('load', drawWires);
+    window.addEventListener('load', function () { fit(); drawWires(); });
+    fit();
     drawWires();
 
     // Let visitors drag the mockup nodes around by their header, just like
     // the real editor - purely cosmetic, no persistence, resets on reload.
+    // Positions live in stage coordinates, so pointer deltas are divided by
+    // the current scale factor.
     canvas.querySelectorAll('.node').forEach(function (node) {
       var handle = node.querySelector('.hd');
       handle.style.cursor = 'grab';
@@ -827,26 +850,18 @@
         var pt = e.touches ? e.touches[0] : e;
         startX = pt.clientX;
         startY = pt.clientY;
-        var rect = node.getBoundingClientRect();
-        var cRect = canvas.getBoundingClientRect();
-        startLeft = rect.left - cRect.left;
-        startTop = rect.top - cRect.top;
-        // Mobile nodes are centered via left:50%+transform (fixed pixel
-        // columns don't fit a narrow viewport) - switch to plain pixel
-        // positioning up front so the transform doesn't double-offset once
-        // we start writing inline left/top below.
-        node.style.transform = 'none';
-        node.style.left = startLeft + 'px';
-        node.style.top = startTop + 'px';
+        startLeft = node.offsetLeft;
+        startTop = node.offsetTop;
         e.preventDefault();
       }
       function move(e) {
         if (!dragging) return;
         var pt = e.touches ? e.touches[0] : e;
-        var dx = pt.clientX - startX;
-        var dy = pt.clientY - startY;
-        var maxLeft = Math.max(0, canvas.clientWidth - node.offsetWidth);
-        var maxTop = Math.max(0, canvas.clientHeight - node.offsetHeight);
+        var k = scaleK();
+        var dx = (pt.clientX - startX) / k;
+        var dy = (pt.clientY - startY) / k;
+        var maxLeft = Math.max(0, STAGE_W - node.offsetWidth);
+        var maxTop = Math.max(0, STAGE_H - node.offsetHeight);
         node.style.left = Math.min(Math.max(0, startLeft + dx), maxLeft) + 'px';
         node.style.top = Math.min(Math.max(0, startTop + dy), maxTop) + 'px';
         drawWires();
