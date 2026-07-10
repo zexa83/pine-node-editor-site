@@ -119,6 +119,11 @@
   }
   .btn-primary:hover { background: var(--accent-hover); }
   .btn-lg { padding: 13px 26px; font-size: 15px; border-radius: 10px; }
+  .btn.disabled {
+    opacity: 0.55;
+    cursor: default;
+    pointer-events: none;
+  }
 
   @media (max-width: 760px) {
     .nav-links { display: none; }
@@ -597,7 +602,7 @@
       <a href="#contact">Contact</a>
     </div>
     <div class="nav-cta">
-      <a href="#contact" class="btn btn-primary">Get in touch</a>
+      <a href="#" class="btn btn-primary js-install" data-soon="Coming soon">Add to Chrome</a>
     </div>
   </nav>
 </header>
@@ -612,7 +617,7 @@
       ready-to-paste Pine Script v6 — no syntax, no boilerplate.
     </p>
     <div class="hero-ctas">
-      <a href="#contact" class="btn btn-primary btn-lg">Request early access</a>
+      <a href="#" class="btn btn-primary btn-lg js-install">Add to Chrome — Free</a>
       <a href="#how" class="btn btn-lg">See how it works</a>
     </div>
     <div class="hero-note">Free tier available · Pro from €10/month</div>
@@ -771,7 +776,7 @@
           <li>Local graph saving</li>
           <li>Basic indicators & conditions</li>
         </ul>
-        <a href="#contact" class="btn">Get started</a>
+        <a href="#" class="btn js-install">Get started</a>
       </div>
       <div class="price-card pro">
         <span class="price-badge">Pro</span>
@@ -784,7 +789,7 @@
           <li>Graph import / export</li>
           <li>Priority support</li>
         </ul>
-        <a href="#contact" class="btn btn-primary">Go Pro</a>
+        <a href="#" class="btn btn-primary js-checkout">Go Pro</a>
       </div>
     </div>
   </div>
@@ -799,7 +804,7 @@
         <p>Questions, feature requests, or bug reports — send a message and it'll land straight in our inbox.</p>
         <div class="contact-item">
           <span class="ico">✉</span>
-          <span id="contact-email">@gmail.com</span>
+          <span id="contact-email">support@pinenodeeditor.com</span>
         </div>
         <div class="contact-item">
           <span class="ico">↻</span>
@@ -985,7 +990,31 @@
     tick();
   })();
 
-  var CONTACT_EMAIL = '@gmail.com';
+  var CONTACT_EMAIL = 'support@pinenodeeditor.com';
+
+  // Chrome Web Store listing — fill in the URL when the extension is
+  // published. While it's empty, every install button renders as a
+  // non-clickable "coming soon" state instead of a dead link.
+  var CHROME_STORE_URL = '';
+  var CHECKOUT_URL = 'https://buy.polar.sh/polar_cl_YnEEohPYqLEwSgB5P8DXXPDfL57NfP8BDkihn00aBcS';
+
+  document.querySelectorAll('.js-install').forEach(function (a) {
+    if (CHROME_STORE_URL) {
+      a.href = CHROME_STORE_URL;
+      a.target = '_blank';
+      a.rel = 'noopener';
+    } else {
+      a.textContent = a.dataset.soon || 'Coming soon to Chrome Web Store';
+      a.classList.add('disabled');
+      a.removeAttribute('href');
+      a.title = 'The extension is on its way to the Chrome Web Store — use the contact form to get notified at launch';
+    }
+  });
+  document.querySelectorAll('.js-checkout').forEach(function (a) {
+    a.href = CHECKOUT_URL;
+    a.target = '_blank';
+    a.rel = 'noopener';
+  });
 
   document.getElementById('feedback-form').addEventListener('submit', function (e) {
     e.preventDefault();

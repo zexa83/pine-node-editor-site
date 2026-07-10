@@ -75,6 +75,7 @@ nav{
 .btn:hover{ background:#383c47; }
 .btn-primary{ background:var(--accent); border-color:var(--accent); color:#07222c; }
 .btn-primary:hover{ background:var(--accent-h); }
+.btn.disabled{ opacity:.55; cursor:default; pointer-events:none; }
 @media(max-width:700px){ .nav-links{ display:none; } }
 
 /* ── Page hero ──────────────────────────────────────────────── */
@@ -560,7 +561,7 @@ kbd{
       <a href="how-it-works.html" style="color:var(--text)">How it works</a>
       <a href="index.html#pricing">Pricing</a>
     </div>
-    <a href="#" class="btn btn-primary">Open Editor</a>
+    <a href="#" class="btn btn-primary js-install" data-soon="Coming soon">Add to Chrome</a>
   </nav>
 </header>
 
@@ -860,14 +861,38 @@ v_n1_value = <span class="fn">ta.ema</span>(close, v_n1_period)
     <h2>Ready to build your first strategy?</h2>
     <p>Open the editor, drag a few nodes, and you'll have Pine Script in under a minute.</p>
     <div class="cta-btns">
-      <a href="#" class="btn btn-primary btn-lg" style="font-size:15px; padding:13px 28px;">Open Editor — it's free</a>
+      <a href="#" class="btn btn-primary btn-lg js-install" style="font-size:15px; padding:13px 28px;">Add to Chrome — it's free</a>
     </div>
   </div>
 </div>
 
 <footer>
-  <div>© 2025 Pine Node Editor &nbsp;·&nbsp; <a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a> &nbsp;·&nbsp; <a href="index.html">Home</a></div>
+  <!-- Privacy/Terms links return here once those pages exist (required
+       before the Chrome Web Store listing goes live — see TOS_DRAFT.md). -->
+  <div>© <span id="year">2026</span> Pine Node Editor &nbsp;·&nbsp; <a href="index.html">Home</a> &nbsp;·&nbsp; <a href="index.html#contact">Contact</a></div>
 </footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Chrome Web Store listing — fill in the URL when the extension is
+  // published (keep in sync with the same constant in index.html). While
+  // it's empty, install buttons render as a "coming soon" state.
+  var CHROME_STORE_URL = '';
+
+  document.querySelectorAll('.js-install').forEach(function (a) {
+    if (CHROME_STORE_URL) {
+      a.href = CHROME_STORE_URL;
+      a.target = '_blank';
+      a.rel = 'noopener';
+    } else {
+      a.textContent = a.dataset.soon || 'Coming soon to Chrome Web Store';
+      a.classList.add('disabled');
+      a.removeAttribute('href');
+      a.title = 'The extension is on its way to the Chrome Web Store — use the contact form to get notified at launch';
+    }
+  });
+</script>
 
 </body>
 </html>
