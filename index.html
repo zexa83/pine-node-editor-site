@@ -325,7 +325,7 @@
   .n3 .hd { background: #5f3f2a; }
   .n4 { top: 160px; left: 420px; }
   .n4 .hd { background: #5f2a35; }
-  .n5 { top: 50px; left: 640px; }
+  .n5 { top: 50px; left: 620px; }
   .n5 .hd { background: #1a4d2e; }
 
   svg.wires { position: absolute; top: 0; left: 0; pointer-events: none; overflow: visible; }
@@ -490,10 +490,20 @@
   /* ---------- Contact ---------- */
   .contact-actions {
     display: flex;
-    gap: 14px;
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap;
+  }
+  .email-split { display: inline-flex; align-items: stretch; }
+  .email-split .btn-primary { border-radius: 10px 0 0 10px; }
+  .email-split .copy-btn {
+    border-radius: 0 10px 10px 0;
+    border-left: none;
+    padding: 13px 16px;
+    min-width: 50px;
+    justify-content: center;
+  }
+  @media (max-width: 420px) {
+    .email-split .btn-primary { font-size: 13px; padding-left: 13px; padding-right: 13px; }
   }
 
   /* ---------- Footer ---------- */
@@ -748,8 +758,15 @@
       <p>Questions, feature requests, or bug reports — drop us an email.</p>
     </div>
     <div class="contact-actions">
-      <a href="mailto:support@pinenodeeditor.com" class="btn btn-primary btn-lg">✉&nbsp; support@pinenodeeditor.com</a>
-      <button type="button" class="btn btn-lg" id="copy-email">Copy email</button>
+      <div class="email-split">
+        <a href="mailto:support@pinenodeeditor.com" class="btn btn-primary btn-lg">✉&nbsp; support@pinenodeeditor.com</a>
+        <button type="button" class="btn btn-lg copy-btn" id="copy-email" title="Copy email address" aria-label="Copy email address">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <rect x="5.5" y="5.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M10.5 3.5V3a1.5 1.5 0 0 0-1.5-1.5H3A1.5 1.5 0 0 0 1.5 3v6A1.5 1.5 0 0 0 3 10.5h.5" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 </section>
@@ -790,9 +807,14 @@
     // Shrink the whole stage uniformly when the canvas is narrower than the
     // 780px design width - the desktop composition just gets smaller, so the
     // wires keep their shape instead of contorting around stacked nodes.
+    // PAD keeps the composition centered with a breathing margin from the
+    // window edges at every scale.
+    var PAD = 14;
     function fit() {
-      var k = Math.min(1, canvas.clientWidth / STAGE_W);
+      var w = canvas.clientWidth;
+      var k = Math.min(1, (w - PAD * 2) / STAGE_W);
       stage.style.transform = 'scale(' + k + ')';
+      stage.style.left = Math.round((w - STAGE_W * k) / 2) + 'px';
       canvas.style.height = Math.round(STAGE_H * k) + 'px';
     }
 
@@ -945,9 +967,10 @@
 
   document.getElementById('copy-email').addEventListener('click', function () {
     var btn = this;
+    var icon = btn.innerHTML;
     function done() {
-      btn.textContent = 'Copied ✓';
-      setTimeout(function () { btn.textContent = 'Copy email'; }, 1600);
+      btn.textContent = '✓';
+      setTimeout(function () { btn.innerHTML = icon; }, 1600);
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(CONTACT_EMAIL).then(done);

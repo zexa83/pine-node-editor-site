@@ -237,11 +237,13 @@ h1{ font-size:42px; font-weight:800; letter-spacing:-.8px; margin:0 0 16px; }
   gap:0; padding:30px 20px;
   flex-wrap:nowrap; overflow:hidden;
 }
-/* The 4 nodes + arrows need ~530px to lay out in one row - narrower than
-   that, centering + overflow:hidden was silently clipping the first/last
-   node instead of showing them. Let the strip scroll horizontally instead. */
-@media (max-width:560px){
-  .pipeline{ justify-content:flex-start; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+/* The 4 nodes + arrows form one fixed-width row. Narrower than that, JS
+   scales the whole row down uniformly (same treatment as the node demos)
+   so it stays centered with a margin from the edges instead of scrolling
+   or clipping. */
+.pipeline-track{
+  display:flex; align-items:center; flex:none;
+  transform-origin:center top;
 }
 .pipe-node{
   background:#1e2129;
@@ -304,10 +306,10 @@ h1{ font-size:42px; font-weight:800; letter-spacing:-.8px; margin:0 0 16px; }
 @keyframes ghostDrag{
   0%  { left:14px; top:60px; opacity:0; transform:scale(.95); }
   10% { opacity:.9; transform:scale(1); }
-  40% { left:165px; top:80px; opacity:.9; }
-  55% { left:165px; top:80px; opacity:.9; transform:scale(1.04); }
-  65% { left:165px; top:80px; opacity:1;  transform:scale(1); }
-  85% { left:165px; top:80px; opacity:1; }
+  40% { left:238px; top:88px; opacity:.9; }
+  55% { left:238px; top:88px; opacity:.9; transform:scale(1.04); }
+  65% { left:238px; top:88px; opacity:1;  transform:scale(1); }
+  85% { left:238px; top:88px; opacity:1; }
   95% { opacity:0; }
   100%{ left:14px; top:60px; opacity:0; transform:scale(.95); }
 }
@@ -324,8 +326,8 @@ h1{ font-size:42px; font-weight:800; letter-spacing:-.8px; margin:0 0 16px; }
 @keyframes cursorMove{
   0%  { left:58px; top:73px; opacity:0; }
   8%  { opacity:1; }
-  40% { left:213px; top:93px; }
-  85% { left:213px; top:93px; opacity:1; }
+  40% { left:286px; top:101px; }
+  85% { left:286px; top:101px; opacity:1; }
   95% { opacity:0; }
   100%{ left:58px; top:73px; opacity:0; }
 }
@@ -333,7 +335,7 @@ h1{ font-size:42px; font-weight:800; letter-spacing:-.8px; margin:0 0 16px; }
 /* landed node */
 .landed-node{
   position:absolute;
-  left:165px; top:80px;
+  left:238px; top:88px;
   width:112px;
   border-radius:7px;
   background:#1e2129;
@@ -608,6 +610,7 @@ kbd{
       <div style="padding:28px 16px; display:flex; flex-direction:column; gap:20px;">
         <!-- pipeline diagram -->
         <div class="pipeline" style="background:var(--bg); border-radius:10px; border:1px solid var(--border); padding:20px 12px;">
+          <div class="pipeline-track">
           <div class="pipe-node">
             <div class="hd" style="background:var(--c-input)">Price Source</div>
             <div class="bd">close</div>
@@ -626,6 +629,7 @@ kbd{
           <div class="pipe-node">
             <div class="hd" style="background:var(--c-action-l)">Long Signal</div>
             <div class="bd">entry</div>
+          </div>
           </div>
         </div>
         <!-- legend -->
@@ -755,7 +759,7 @@ kbd{
       <div class="vis-body">
         <div class="vis-stage">
         <!-- node (selected) -->
-        <div class="nd selected" style="left:26px; top:80px;">
+        <div class="nd selected" style="left:100px; top:100px;">
           <div class="hd" style="background:var(--c-indicator)">EMA</div>
           <div class="bd">
             <div class="row in"><span class="pt series"></span> source</div>
@@ -944,6 +948,26 @@ v_n1_value = <span class="fn">ta.ema</span>(close, v_n1_period)
     }
     draw();
     window.addEventListener('load', draw); // late font load can shift node heights
+  })();
+
+  // ── Step 1: scale the pipeline row to fit ──
+  // Same uniform-shrink treatment as the node demos: narrower than the
+  // natural row width, the whole strip scales down and stays centered with
+  // a margin, instead of scrolling or clipping at the edges.
+  (function () {
+    var pipe = document.querySelector('.pipeline');
+    var track = document.querySelector('.pipeline-track');
+    if (!pipe || !track) return;
+    function fit() {
+      var avail = pipe.clientWidth - 24; // the 12px side paddings
+      var k = Math.min(1, avail / track.offsetWidth);
+      track.style.transform = 'scale(' + k + ')';
+      pipe.style.height = Math.round(track.offsetHeight * k + 40) + 'px';
+    }
+    if (window.ResizeObserver) new ResizeObserver(fit).observe(pipe);
+    else window.addEventListener('resize', fit);
+    window.addEventListener('load', fit);
+    fit();
   })();
 
   // Chrome Web Store listing — fill in the URL when the extension is
