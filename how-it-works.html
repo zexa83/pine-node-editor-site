@@ -298,19 +298,21 @@ h1{ font-size:42px; font-weight:800; letter-spacing:-.8px; margin:0 0 16px; }
   box-shadow:0 0 0 3px rgba(79,195,247,.18), 0 8px 24px -8px rgba(0,0,0,.6);
   font-size:10.5px;
   pointer-events:none;
-  animation:ghostDrag 3.8s ease-in-out infinite;
+  animation:ghostDrag 6s ease-in-out infinite;
 }
 .ghost-node .hd{ padding:6px 9px; background:var(--c-indicator); border-radius:7px 7px 0 0; font-weight:700; color:#cfe8f5; font-size:11px; }
 .ghost-node .bd{ padding:6px 9px; color:var(--muted); }
 
+/* Timeline (6s, shared with cursorMove/landedAppear): the ghost is dragged
+   out of the palette (0-25%), pops on drop (31%) and vanishes at exactly the
+   moment the landed node appears (34%) - a clean hand-off with no period of
+   both being visible. The landed node then owns the scene until ~93%. */
 @keyframes ghostDrag{
   0%  { left:14px; top:60px; opacity:0; transform:scale(.95); }
-  10% { opacity:.9; transform:scale(1); }
-  40% { left:238px; top:88px; opacity:.9; }
-  55% { left:238px; top:88px; opacity:.9; transform:scale(1.04); }
-  65% { left:238px; top:88px; opacity:1;  transform:scale(1); }
-  85% { left:238px; top:88px; opacity:1; }
-  95% { opacity:0; }
+  6%  { opacity:.9; transform:scale(1); }
+  25% { left:238px; top:88px; opacity:.9; }
+  31% { left:238px; top:88px; opacity:.9; transform:scale(1.03); }
+  34% { left:238px; top:88px; opacity:0; transform:scale(1); }
   100%{ left:14px; top:60px; opacity:0; transform:scale(.95); }
 }
 
@@ -321,14 +323,14 @@ h1{ font-size:42px; font-weight:800; letter-spacing:-.8px; margin:0 0 16px; }
   background:rgba(255,255,255,.85);
   box-shadow:0 0 0 3px rgba(255,255,255,.2);
   pointer-events:none;
-  animation:cursorMove 3.8s ease-in-out infinite;
+  animation:cursorMove 6s ease-in-out infinite;
 }
 @keyframes cursorMove{
   0%  { left:58px; top:73px; opacity:0; }
-  8%  { opacity:1; }
-  40% { left:286px; top:101px; }
-  85% { left:286px; top:101px; opacity:1; }
-  95% { opacity:0; }
+  5%  { opacity:1; }
+  25% { left:286px; top:101px; }
+  33% { left:286px; top:101px; opacity:1; }
+  37% { left:286px; top:101px; opacity:0; }
   100%{ left:58px; top:73px; opacity:0; }
 }
 
@@ -342,15 +344,15 @@ h1{ font-size:42px; font-weight:800; letter-spacing:-.8px; margin:0 0 16px; }
   border:1px solid var(--border);
   font-size:10.5px;
   opacity:0;
-  animation:landedAppear 3.8s ease-in-out infinite;
+  animation:landedAppear 6s ease-in-out infinite;
 }
 .landed-node .hd{ padding:6px 9px; background:var(--c-indicator); border-radius:7px 7px 0 0; font-weight:700; color:#cfe8f5; }
 .landed-node .bd{ padding:6px 9px; color:var(--muted); }
 @keyframes landedAppear{
-  0%,63%{ opacity:0; }
-  70%   { opacity:1; transform:scale(1.04); }
-  75%   { transform:scale(1); }
-  90%   { opacity:1; }
+  0%,33%{ opacity:0; }
+  36%   { opacity:1; transform:scale(1.04); }
+  40%   { transform:scale(1); }
+  93%   { opacity:1; }
   100%  { opacity:0; }
 }
 
@@ -677,10 +679,14 @@ kbd{
             <div class="row out">value <span class="pt series"></span></div>
           </div>
         </div>
-        <!-- ghost being dragged -->
+        <!-- ghost being dragged: same content as the landed node, so the
+             ghost->landed hand-off at the drop moment is seamless -->
         <div class="ghost-node">
           <div class="hd">EMA</div>
-          <div class="bd">period 21</div>
+          <div class="bd">
+            <div class="row in"><span class="pt series"></span>source</div>
+            <div class="row out">value <span class="pt series"></span></div>
+          </div>
         </div>
         <!-- cursor -->
         <div class="cursor"></div>
