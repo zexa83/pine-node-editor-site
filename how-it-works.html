@@ -152,6 +152,16 @@ h1{ font-size:42px; font-weight:800; letter-spacing:-.8px; margin:0 0 16px; }
   height:280px;
 }
 
+/* Design surface inside .vis-body. The demos position their nodes with
+   absolute pixel coordinates against this stage. On viewports narrower than
+   the 480px design width, JS scales the whole stage down uniformly — the
+   nodes shrink but the composition never re-flows. */
+.vis-stage{
+  position:absolute; top:0; left:0;
+  width:480px; height:280px;
+  transform-origin:0 0;
+}
+
 @media(max-width:820px){
   .step{ grid-template-columns:1fr; gap:36px; }
   .step.rev .step-text{ order:1; }
@@ -643,6 +653,7 @@ kbd{
         <div class="vis-label">Adding a node</div>
       </div>
       <div class="vis-body">
+        <div class="vis-stage">
         <!-- mini palette -->
         <div class="palette-mini">
           <div class="grp">Indicators</div>
@@ -669,6 +680,7 @@ kbd{
         </div>
         <!-- cursor -->
         <div class="cursor"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -688,37 +700,40 @@ kbd{
         <div class="vis-label">Connecting nodes</div>
       </div>
       <div class="vis-body">
+        <div class="vis-stage" id="step3-stage">
         <!-- EMA node -->
-        <div class="nd" style="left:22px; top:70px;">
+        <div class="nd" style="left:20px; top:60px;">
           <div class="hd" style="background:var(--c-indicator)">EMA</div>
           <div class="bd">
             <div class="row in"><span class="pt series"></span> source</div>
-            <div class="row out">value <span class="pt series pt-pulse"></span></div>
+            <div class="row out">value <span class="pt series pt-pulse" id="p-ema-out"></span></div>
           </div>
         </div>
         <!-- Compare node -->
-        <div class="nd" style="left:210px; top:90px;">
+        <div class="nd" style="left:185px; top:90px;">
           <div class="hd" style="background:var(--c-condition)">Compare</div>
           <div class="bd">
-            <div class="row in"><span class="pt series"></span> A</div>
+            <div class="row in"><span class="pt series" id="p-cmp-a"></span> A</div>
             <div class="row in"><span class="pt series"></span> B</div>
-            <div class="row out">result <span class="pt bool"></span></div>
+            <div class="row out">result <span class="pt bool" id="p-cmp-out"></span></div>
           </div>
         </div>
         <!-- Long Signal node -->
-        <div class="nd" style="left:210px; top:185px;">
+        <div class="nd" style="left:340px; top:165px;">
           <div class="hd" style="background:var(--c-action-l)">Long Signal</div>
           <div class="bd">
-            <div class="row in"><span class="pt bool"></span> trigger</div>
+            <div class="row in"><span class="pt bool" id="p-long-in"></span> trigger</div>
           </div>
         </div>
 
         <svg class="wires">
-          <!-- EMA → Compare: the "being drawn" wire -->
-          <path class="wire-draw" d="M 160 96 C 185 96, 185 108, 210 108" stroke-dasharray="220" stroke-dashoffset="220"/>
+          <!-- EMA → Compare: the "being drawn" wire. pathLength normalises
+               the geometry to the 220 units the wireDraw keyframes assume. -->
+          <path class="wire-draw" id="wire-ema-cmp" pathLength="220" stroke-dasharray="220" stroke-dashoffset="220"/>
           <!-- Compare → Long Signal (existing, flowing) -->
-          <path class="wire bool" d="M 340 114 C 360 114, 360 197, 210 197"/>
+          <path class="wire bool" id="wire-cmp-long"/>
         </svg>
+        </div>
       </div>
     </div>
   </div>
@@ -738,6 +753,7 @@ kbd{
         <div class="vis-label">Properties panel</div>
       </div>
       <div class="vis-body">
+        <div class="vis-stage">
         <!-- node (selected) -->
         <div class="nd selected" style="left:26px; top:80px;">
           <div class="hd" style="background:var(--c-indicator)">EMA</div>
@@ -761,6 +777,7 @@ kbd{
             <div class="props-label">Color</div>
             <input class="props-input" readonly value="color.blue" style="color:var(--accent); font-size:10px;">
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -874,6 +891,60 @@ v_n1_value = <span class="fn">ta.ema</span>(close, v_n1_period)
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ── Demo stages: shrink-to-fit on narrow viewports ──
+  // Each .vis-stage is a fixed 480x280 design surface with absolutely
+  // positioned nodes. Wider containers just stretch the stage (so panels
+  // anchored to right:0 stay flush with the window edge); narrower ones
+  // scale the whole stage down uniformly instead of re-flowing the nodes.
+  var STAGE_W = 480, STAGE_H = 280;
+  document.querySelectorAll('.vis-stage').forEach(function (stage) {
+    var body = stage.parentElement;
+    function fit() {
+      var w = body.clientWidth;
+      if (w >= STAGE_W) {
+        stage.style.width = w + 'px';
+        stage.style.transform = 'none';
+        body.style.height = STAGE_H + 'px';
+      } else {
+        stage.style.width = STAGE_W + 'px';
+        stage.style.transform = 'scale(' + (w / STAGE_W) + ')';
+        body.style.height = Math.round(STAGE_H * (w / STAGE_W)) + 'px';
+      }
+    }
+    if (window.ResizeObserver) new ResizeObserver(fit).observe(body);
+    else window.addEventListener('resize', fit);
+    fit();
+  });
+
+  // ── Step 3: draw wires from the real port positions ──
+  // The wires used to be hand-tuned static path coords, which drifted apart
+  // from the ports whenever font metrics changed the node heights. Compute
+  // the endpoints from the DOM instead.
+  (function () {
+    var stage = document.getElementById('step3-stage');
+    if (!stage) return;
+    var wires = [
+      ['p-ema-out', 'p-cmp-a', 'wire-ema-cmp'],
+      ['p-cmp-out', 'p-long-in', 'wire-cmp-long'],
+    ];
+    function draw() {
+      var sr = stage.getBoundingClientRect();
+      var k = sr.width / stage.offsetWidth; // current scale factor
+      wires.forEach(function (w) {
+        var a = document.getElementById(w[0]).getBoundingClientRect();
+        var b = document.getElementById(w[1]).getBoundingClientRect();
+        var ax = (a.left + a.width / 2 - sr.left) / k, ay = (a.top + a.height / 2 - sr.top) / k;
+        var bx = (b.left + b.width / 2 - sr.left) / k, by = (b.top + b.height / 2 - sr.top) / k;
+        var dx = Math.max(30, (bx - ax) * 0.5);
+        document.getElementById(w[2]).setAttribute('d',
+          'M' + ax + ',' + ay +
+          ' C' + (ax + dx) + ',' + ay + ' ' + (bx - dx) + ',' + by + ' ' + bx + ',' + by);
+      });
+    }
+    draw();
+    window.addEventListener('load', draw); // late font load can shift node heights
+  })();
 
   // Chrome Web Store listing — fill in the URL when the extension is
   // published (keep in sync with the same constant in index.html). While
