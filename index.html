@@ -486,72 +486,13 @@
   .price-card .btn { width: 100%; }
 
   /* ---------- Contact ---------- */
-  .contact-wrap {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 48px;
-    align-items: start;
-  }
-  @media (max-width: 800px) { .contact-wrap { grid-template-columns: 1fr; } }
-
-  .contact-info h2 { text-align: left; margin-bottom: 14px; }
-  .contact-info p { color: var(--text-muted); font-size: 15px; margin-bottom: 24px; }
-  .contact-item {
+  .contact-actions {
     display: flex;
+    gap: 14px;
+    justify-content: center;
     align-items: center;
-    gap: 12px;
-    font-size: 14px;
-    color: var(--text-muted);
-    margin-bottom: 12px;
+    flex-wrap: wrap;
   }
-  .contact-item .ico {
-    width: 32px; height: 32px;
-    border-radius: 8px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--accent);
-    flex: none;
-  }
-
-  form {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 28px;
-  }
-  .field { margin-bottom: 18px; }
-  .field label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 7px;
-    color: var(--text);
-  }
-  .field input, .field textarea {
-    width: 100%;
-    padding: 11px 13px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    color: var(--text);
-    font-size: 14px;
-    font-family: inherit;
-    resize: vertical;
-  }
-  .field input:focus, .field textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-  }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
-  .form-status {
-    margin-top: 12px;
-    font-size: 13px;
-    color: var(--accent);
-    display: none;
-  }
-  .form-status.show { display: block; }
 
   /* ---------- Footer ---------- */
   footer {
@@ -797,43 +738,14 @@
 
 <section id="contact" style="background: var(--bg-alt);">
   <div class="wrap">
-    <div class="contact-wrap">
-      <div class="contact-info">
-        <div class="kicker">Contact</div>
-        <h2>Get in touch</h2>
-        <p>Questions, feature requests, or bug reports — send a message and it'll land straight in our inbox.</p>
-        <div class="contact-item">
-          <span class="ico">✉</span>
-          <span id="contact-email">support@pinenodeeditor.com</span>
-        </div>
-        <div class="contact-item">
-          <span class="ico">↻</span>
-          <span>We usually reply within 1-2 business days</span>
-        </div>
-      </div>
-
-      <form id="feedback-form">
-        <div class="form-row">
-          <div class="field">
-            <label for="f-name">Name</label>
-            <input type="text" id="f-name" name="name" required placeholder="Jane Trader">
-          </div>
-          <div class="field">
-            <label for="f-email">Email</label>
-            <input type="email" id="f-email" name="email" required placeholder="you@example.com">
-          </div>
-        </div>
-        <div class="field">
-          <label for="f-subject">Subject</label>
-          <input type="text" id="f-subject" name="subject" placeholder="Feature request, bug report, feedback...">
-        </div>
-        <div class="field">
-          <label for="f-message">Message</label>
-          <textarea id="f-message" name="message" rows="5" required placeholder="Tell us what's on your mind..."></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary" style="width:100%;">Send message</button>
-        <div class="form-status" id="form-status">Opening your email client with this message pre-filled...</div>
-      </form>
+    <div class="section-head">
+      <div class="kicker">Contact</div>
+      <h2>Get in touch</h2>
+      <p>Questions, feature requests, or bug reports — drop us an email.</p>
+    </div>
+    <div class="contact-actions">
+      <a href="mailto:support@pinenodeeditor.com" class="btn btn-primary btn-lg">✉&nbsp; support@pinenodeeditor.com</a>
+      <button type="button" class="btn btn-lg" id="copy-email">Copy email</button>
     </div>
   </div>
 </section>
@@ -1007,7 +919,7 @@
       a.textContent = a.dataset.soon || 'Coming soon to Chrome Web Store';
       a.classList.add('disabled');
       a.removeAttribute('href');
-      a.title = 'The extension is on its way to the Chrome Web Store — use the contact form to get notified at launch';
+      a.title = 'The extension is on its way to the Chrome Web Store — email us to get notified at launch';
     }
   });
   document.querySelectorAll('.js-checkout').forEach(function (a) {
@@ -1016,22 +928,23 @@
     a.rel = 'noopener';
   });
 
-  document.getElementById('feedback-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var name = document.getElementById('f-name').value.trim();
-    var email = document.getElementById('f-email').value.trim();
-    var subject = document.getElementById('f-subject').value.trim() || 'Pine Node Editor — website message';
-    var message = document.getElementById('f-message').value.trim();
-
-    var body = 'From: ' + name + ' (' + email + ')\n\n' + message;
-    var mailto = 'mailto:' + encodeURIComponent(CONTACT_EMAIL) +
-      '?subject=' + encodeURIComponent(subject) +
-      '&body=' + encodeURIComponent(body);
-
-    window.location.href = mailto;
-
-    var status = document.getElementById('form-status');
-    status.classList.add('show');
+  document.getElementById('copy-email').addEventListener('click', function () {
+    var btn = this;
+    function done() {
+      btn.textContent = 'Copied ✓';
+      setTimeout(function () { btn.textContent = 'Copy email'; }, 1600);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(CONTACT_EMAIL).then(done);
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = CONTACT_EMAIL;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      done();
+    }
   });
 </script>
 
