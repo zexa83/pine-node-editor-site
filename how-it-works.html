@@ -33,7 +33,7 @@
   /* port colours */
   --p-series:  #4fc3f7;
   --p-bool:    #ce93d8;
-  --p-signal:  #ffd54f;
+  --p-config:  #81c784;
   --p-config:  #ce93d8;
 }
 
@@ -202,7 +202,6 @@ h1{ font-size:42px; font-weight:800; letter-spacing:-.8px; margin:0 0 16px; }
 }
 .pt.series { background:var(--p-series); }
 .pt.bool   { background:var(--p-bool);   }
-.pt.signal { background:var(--p-signal); }
 
 /* ── Wire SVG ───────────────────────────────────────────────── */
 .wires{ position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; overflow:visible; }
@@ -212,7 +211,6 @@ h1{ font-size:42px; font-weight:800; letter-spacing:-.8px; margin:0 0 16px; }
   animation:wireFlow 1.1s linear infinite;
 }
 .wire.bool{ stroke:var(--p-bool); }
-.wire.signal{ stroke:var(--p-signal); }
 @keyframes wireFlow{ to{ stroke-dashoffset:-20; } }
 
 /* drawing animation for step 2 */
@@ -640,7 +638,7 @@ kbd{
         <div style="display:flex; gap:18px; flex-wrap:wrap; padding:4px 4px; font-size:11px; color:var(--muted); justify-content:center;">
           <span><span class="pipe-port" style="background:var(--p-series)"></span>series (numbers)</span>
           <span><span class="pipe-port" style="background:var(--p-bool)"></span>bool (true/false)</span>
-          <span><span class="pipe-port" style="background:var(--p-signal)"></span>signal (action)</span>
+          <span><span class="pipe-port" style="background:var(--p-config)"></span>config (risk settings)</span>
         </div>
       </div>
     </div>
@@ -703,7 +701,7 @@ kbd{
       <div class="step-num">Step 3</div>
       <h2>Wire nodes by dragging between ports</h2>
       <p>Every node has <strong>input ports</strong> on the left side and <strong>output ports</strong> on the right. Drag from an output dot to an input dot to create a connection.</p>
-      <p>Port colours tell you what type of data flows through: <span style="color:var(--p-series)">blue = series</span>, <span style="color:var(--p-bool)">purple = boolean</span>, <span style="color:var(--p-signal)">yellow = signal</span>. Mismatched types won't connect.</p>
+      <p>Port colours tell you what type of data flows through: <span style="color:var(--p-series)">blue = series</span>, <span style="color:var(--p-bool)">purple = boolean</span>, <span style="color:var(--p-config)">green = config</span>. Mismatched types won't connect.</p>
       <p>Click an existing wire to delete it. Reconnecting an input port automatically replaces the old wire.</p>
     </div>
     <div class="step-vis">
