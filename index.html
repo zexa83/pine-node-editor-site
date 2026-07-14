@@ -439,6 +439,15 @@
   }
   @media (max-width: 660px) { .pricing { grid-template-columns: 1fr; } }
 
+  .pricing-disclaimer {
+    max-width: 560px;
+    margin: 28px auto 0;
+    text-align: center;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+
   .price-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -571,7 +580,7 @@
       <a href="#" class="btn btn-primary btn-lg js-install">Add to Chrome — Free</a>
       <a href="#how" class="btn btn-lg">See how it works</a>
     </div>
-    <div class="hero-note">Free tier available · Pro from €10/month</div>
+    <div class="hero-note">Free tier available · Pro from €10/month · Desktop Chrome only</div>
 
     <div class="mockup">
       <div class="mockup-bar">
@@ -739,11 +748,12 @@
           <li>Full node catalog</li>
           <li>Pine Script compile & export</li>
           <li>Graph import / export</li>
-          <li>Priority support</li>
+          <li>Use on up to 3 devices</li>
         </ul>
         <a href="#" class="btn btn-primary js-checkout">Go Pro</a>
       </div>
     </div>
+    <p class="pricing-disclaimer">For educational and prototyping use. Strategies you build, generate, or start from a template are not a guarantee of profitability — always backtest before using real capital.</p>
   </div>
 </section>
 
