@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Pine Node Editor</title>
+<meta name="description" content="Privacy Policy for Pine Node Editor, a visual node-based Pine Script builder for TradingView.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEAUlEQVR4nKyXW2zbVBjH/z522zWXpqXQZinNspVWU1eq8jJlSEgwgQYVD5Ngj2MIIQESL7zxggSCN5B4QpoQ9KkIiWkak0AbgzHERWJsYpl2v3XRliVts6buUuW22N6xUzeOfY5rdzsPsX/xyXe+/3c5J5ZgGYlEortSwwcCEZKaqk0IAvpUVYNAbzRNv8K4An4Z85RSFP+t16QvZTktm2sK5k30yaFXoCnfCBBiKz9aHV64sZgnzqpQ3l7Mzx5ZdWDjYGKXpuDowyv1zirUSd0JIR6P99QUcoEq37ge5W6RoHcr3zM5W6+Rp8l9hewzF7fkDDxuGmGzdb7bld7FpHblDYliElrTMzMNPG4NqzfWnbRzw3UtSehn8mGVrsXcqyYkhWgsoVlzaB2POOdMlhpG/FWzGOpG3849CA+PG0aK184hd+x7aOWi524wnTEi4Ffp6CfT6N62vWVO8eoZnP1wj2flJhO/OQ8+Ne5YXB/hkWcQ2jLmpfpb7JKmZ+xqt3No8yh4o3PTiLfqt9gjfqu/fOcG1wH9GUupGxO/fX7vagqlXNqxeHUxj/tFGSylbiwGQ5GPm0o9dINSB2lrR0ffgGFAqZRR+P8PFE6fQNfIBCr5O6gvy45qN7vNzkJfNO66D9j7vHNwGP0vvI6ly6dROHlsVYkgSujf+RoCm7ehozeKUGIrpHAPSrevIHP4W+T//hmsbqAODGqeTzFJxMDud4wI3PrhKyq/1vqcEEx8/iPCQ2MtQtR6HafefxEVmjrrvmPUgJ+9vWs0ibZgxAh3Y3HAWu0qp0uIRKPz/G5HdxnP7H3OYxIIo3v8WVQLc1i+lmL2eWBgixEF1gjEhhxdpQ+pmROn8sj4Djy2/SVs6B+kOW6DQosrd3Sa2+flzHVagEuQQhGHA4sXTjK7TeJVf2TiOYx9NOUwlDt+ANV81qakWd03p7/A8LuftvymlE1j/sRBS0QFawTYOY+9ug+sEZvcC/nMny1KrNWdPTKN6t0cHt/xMqSuHizPXETm0Ne0XUvMGpB41R9MsLfcYHwrU7lV2cKp33D3v19tf2Y0JhPe3l3OzjAdKGduuO7tfpnwTq254weZDsz+fmDlrnX+WmcIj8VAsOs9vX3tkSilL6E8l0FndBPIhiA9aGYwM/UZ8n/95FDO48bgM50/J/Q+EdPfB3b5/SfDy6kfpuZ+IfQjxetreDjP18MG6c6oSBGFqPspy/YaALyzn5xb1pHbRGU/kWdn0xDUt9yUrsVuSnksaHhTpm+pxsa9MJ87pL+rUdNZt0isR6mDNS1LQCaLxYXDOoqmX5XS8vWO9t4pIqo1OrdKjYXp10E/kXDheYr/0BeR7yRR2bu0VDhvrvsAAAD//xjU7rIAAAAGSURBVAMAzItzOqWHPTYAAAAASUVORK5CYII=">
+<style>
+  :root {
+    --bg: #0e0f13;
+    --bg-alt: #14161c;
+    --bg-card: #1a1c22;
+    --bg-button: #2a2d36;
+    --bg-button-hover: #383c47;
+    --border: #2c2f39;
+    --text: #e8e9ed;
+    --text-muted: #8a8f9b;
+    --accent: #4fc3f7;
+    --accent-hover: #6fd1fb;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(14, 15, 19, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav {
+    max-width: 1120px; margin: 0 auto; padding: 16px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: var(--text); }
+  .logo-mark { width: 26px; height: 26px; flex: none; display: block; }
+  .nav-links { display: flex; gap: 28px; font-size: 14px; color: var(--text-muted); }
+  .nav-links a { color: var(--text-muted); }
+  .nav-links a:hover { color: var(--text); text-decoration: none; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 18px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    border: 1px solid var(--border); background: var(--bg-button); color: var(--text);
+  }
+  .btn:hover { background: var(--bg-button-hover); text-decoration: none; }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: #07222c; }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn.disabled { opacity: .55; cursor: default; pointer-events: none; }
+  @media (max-width: 700px) { .nav-links { display: none; } }
+
+  .legal-hero { max-width: 720px; margin: 0 auto; padding: 56px 24px 8px; text-align: center; }
+  .kicker { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .legal-hero h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.6px; margin: 0 0 10px; }
+  .updated { font-size: 13px; color: var(--text-muted); }
+
+  .legal-content { max-width: 720px; margin: 0 auto; padding: 32px 24px 80px; }
+  .legal-content h2 { font-size: 20px; font-weight: 700; margin: 40px 0 12px; letter-spacing: -0.2px; }
+  .legal-content h2:first-child { margin-top: 0; }
+  .legal-content p { color: var(--text-muted); font-size: 15px; margin: 0 0 14px; }
+  .legal-content ul { color: var(--text-muted); font-size: 15px; margin: 0 0 14px; padding-left: 22px; }
+  .legal-content li { margin-bottom: 8px; }
+  .legal-content strong { color: var(--text); }
+  .callout {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px 18px; font-size: 14px; color: var(--text-muted); margin: 0 0 14px;
+  }
+
+  footer { border-top: 1px solid var(--border); padding: 28px 0; }
+  .footer-row {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--text-muted);
+  }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a { color: var(--text-muted); }
+  .footer-links a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="index.html" class="logo">
+      <svg class="logo-mark" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#1a1c22"/>
+            <stop offset="1" stop-color="#0b0d12"/>
+          </linearGradient>
+        </defs>
+        <rect width="128" height="128" rx="28" fill="url(#logoGrad)"/>
+        <g stroke="#4fc3f7" stroke-width="6" stroke-linecap="round" opacity="0.55">
+          <line x1="38" y1="90" x2="64" y2="46"/>
+          <line x1="64" y1="46" x2="93" y2="73"/>
+        </g>
+        <circle cx="38" cy="90" r="13.5" fill="#4fc3f7"/>
+        <circle cx="64" cy="46" r="13.5" fill="#4fc3f7"/>
+        <circle cx="93" cy="73" r="13.5" fill="#4fc3f7"/>
+      </svg>
+      Pine Node Editor
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="how-it-works.html">Tutorial</a>
+      <a href="index.html#pricing">Pricing</a>
+    </div>
+    <a href="#" class="btn btn-primary js-install" data-soon="Coming soon">Add to Chrome</a>
+  </nav>
+</header>
+
+<div class="legal-hero">
+  <div class="kicker">Legal</div>
+  <h1>Privacy Policy</h1>
+  <div class="updated">Last updated: July 14, 2026</div>
+</div>
+
+<div class="legal-content">
+
+<p>This Privacy Policy explains what data Pine Node Editor (the "Extension") and the
+pinenodeeditor.com website collect, and how it's used. The short version: your strategy graphs
+never leave your browser, and we don't run a server that stores or sees them.</p>
+
+<h2>1. Data stored locally, not on our servers</h2>
+<p>We don't operate a backend that receives or stores your strategy graphs. Everything you build
+lives in your own browser:</p>
+<ul>
+  <li><strong>Working graphs</strong> are saved in <code>chrome.storage.local</code>, tied to
+  your specific Chrome installation. Uninstalling the Extension or removing browser data erases
+  them. This data is never transmitted to us.</li>
+  <li><strong>Named saves</strong> (the Save/Load feature) are additionally mirrored to
+  <code>chrome.storage.sync</code>, which Google syncs across your own devices using your Chrome
+  account — this is a convenience backup, not a service we operate. Chrome's sync storage quota
+  is small (about 100KB total, 8KB per item), so very large graphs may not sync and will stay
+  local-only.</li>
+  <li>Unsaved draft work is <strong>not</strong> synced across devices — only an explicit Save
+  guarantees a graph survives a device change.</li>
+</ul>
+
+<h2>2. What we do collect</h2>
+<ul>
+  <li><strong>Payment and license data:</strong> if you purchase a Pro subscription, your
+  payment is handled entirely by <a href="https://polar.sh" target="_blank" rel="noopener">Polar.sh</a>,
+  our Merchant of Record. Polar collects your email address and payment details to process the
+  transaction and issue a license key; we receive only what's needed to validate that license
+  (e.g. your license key status), not your card details. See
+  <a href="https://polar.sh/legal/privacy-notice" target="_blank" rel="noopener">Polar's Privacy Notice</a>
+  for how they handle payment data.</li>
+  <li><strong>Support correspondence:</strong> if you email support@pinenodeeditor.com, we keep
+  that email thread to respond to you and troubleshoot issues. We don't use it for anything
+  else.</li>
+</ul>
+
+<h2>3. What we don't do</h2>
+<ul>
+  <li>We don't sell or rent personal data to third parties.</li>
+  <li>The Extension itself does not run analytics or tracking scripts, and does not read the
+  content of your strategy graphs for any purpose other than compiling the Pine Script you
+  explicitly ask it to generate, locally in your browser.</li>
+  <li>The pinenodeeditor.com website does not use tracking or advertising cookies. Our hosting
+  and CDN provider (Cloudflare) may set minimal technical cookies necessary to serve the site
+  securely; these are not used to profile or track visitors across other sites.</li>
+</ul>
+
+<h2>4. Third parties involved</h2>
+<ul>
+  <li><strong>Polar.sh</strong> — payment processing, subscription billing, and license key
+  issuance for the Pro plan.</li>
+  <li><strong>Google (Chrome Web Store / chrome.storage.sync)</strong> — hosts the Extension for
+  installation and provides the optional cross-device sync of named saves, governed by your own
+  Google account settings.</li>
+  <li><strong>Cloudflare</strong> — DNS and content delivery for pinenodeeditor.com.</li>
+</ul>
+
+<h2>5. Legal basis for processing (GDPR)</h2>
+<p>Where the GDPR applies, we rely on the following legal bases:</p>
+<ul>
+  <li><strong>Performance of a contract</strong> — processing your email and license data via
+  Polar to sell and activate a Pro subscription.</li>
+  <li><strong>Legitimate interest</strong> — responding to support emails you send us, and
+  keeping the Extension and site secure.</li>
+  <li><strong>Consent</strong> — anywhere we'd introduce optional things like marketing emails or
+  analytics in the future; we don't do either today, and would ask first if that changes.</li>
+</ul>
+<p>We don't process any "special category" data (health, biometric, political opinions, etc.),
+and the Extension has no reason to ever ask you for any.</p>
+
+<h2>6. International data transfers</h2>
+<p>Some of the processors we rely on (Polar/Stripe for payments, Google for the Chrome Web Store
+and chrome.storage.sync, Cloudflare for hosting/CDN) may process data outside the EU/EEA as part
+of operating their global infrastructure. Where that happens, those providers are responsible
+for ensuring an adequate transfer mechanism is in place (such as Standard Contractual Clauses)
+under their own privacy terms.</p>
+
+<h2>7. Your rights</h2>
+<p>If the GDPR applies to you, you have the right to request access to, correction of, or
+deletion of your personal data, to object to or restrict certain processing, and to receive your
+data in a portable format. Because we don't hold your strategy graphs on our servers (see
+section 1), most of what we could act on is limited to the support-email and license-lookup data
+described above — for anything held by Polar as payment processor, you can also exercise these
+rights with them directly.</p>
+<p>To exercise any of these rights, email <a href="mailto:support@pinenodeeditor.com">support@pinenodeeditor.com</a>.
+If you're not satisfied with our response, you have the right to lodge a complaint with your
+local data protection authority — for Estonia, that's the
+<a href="https://www.aki.ee/en" target="_blank" rel="noopener">Estonian Data Protection Inspectorate (Andmekaitse Inspektsioon)</a>.</p>
+
+<h2>8. Data retention and deletion</h2>
+<p>Local and synced graph data is retained until you delete it yourself, uninstall the
+Extension, or clear your browser/Google account data — we have no copy to delete on our end.
+Polar retains transaction and billing records per their own policies, including as required for
+tax and legal compliance. To ask about data Polar holds on you, contact
+support@pinenodeeditor.com or Polar directly.</p>
+
+<h2>9. Children's privacy</h2>
+<p>The Extension is not directed at children under 16, and we do not knowingly collect personal
+data from them.</p>
+
+<h2>10. Changes to this policy</h2>
+<p>We may update this Privacy Policy as the product evolves. Material changes will be reflected
+by updating the "Last updated" date above.</p>
+
+<h2>11. Contact</h2>
+<p>Questions about this policy or your data? Email us at
+<a href="mailto:support@pinenodeeditor.com">support@pinenodeeditor.com</a>.</p>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-row">
+      <div>© <span id="year"></span> Pine Node Editor. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Chrome Web Store listing — fill in the URL when the extension is
+  // published (keep in sync with the same constant in index.html/how-it-works.html).
+  var CHROME_STORE_URL = '';
+
+  document.querySelectorAll('.js-install').forEach(function (a) {
+    if (CHROME_STORE_URL) {
+      a.href = CHROME_STORE_URL;
+      a.target = '_blank';
+      a.rel = 'noopener';
+    } else {
+      a.textContent = a.dataset.soon || 'Coming soon to Chrome Web Store';
+      a.classList.add('disabled');
+      a.removeAttribute('href');
+      a.title = 'The extension is on its way to the Chrome Web Store — email us to get notified at launch';
+    }
+  });
+</script>
+
+</body>
+</html>

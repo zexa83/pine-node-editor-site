@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service — Pine Node Editor</title>
+<meta name="description" content="Terms of Service for Pine Node Editor, a visual node-based Pine Script builder for TradingView.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEAUlEQVR4nKyXW2zbVBjH/z522zWXpqXQZinNspVWU1eq8jJlSEgwgQYVD5Ngj2MIIQESL7zxggSCN5B4QpoQ9KkIiWkak0AbgzHERWJsYpl2v3XRliVts6buUuW22N6xUzeOfY5rdzsPsX/xyXe+/3c5J5ZgGYlEortSwwcCEZKaqk0IAvpUVYNAbzRNv8K4An4Z85RSFP+t16QvZTktm2sK5k30yaFXoCnfCBBiKz9aHV64sZgnzqpQ3l7Mzx5ZdWDjYGKXpuDowyv1zirUSd0JIR6P99QUcoEq37ge5W6RoHcr3zM5W6+Rp8l9hewzF7fkDDxuGmGzdb7bld7FpHblDYliElrTMzMNPG4NqzfWnbRzw3UtSehn8mGVrsXcqyYkhWgsoVlzaB2POOdMlhpG/FWzGOpG3849CA+PG0aK184hd+x7aOWi524wnTEi4Ffp6CfT6N62vWVO8eoZnP1wj2flJhO/OQ8+Ne5YXB/hkWcQ2jLmpfpb7JKmZ+xqt3No8yh4o3PTiLfqt9gjfqu/fOcG1wH9GUupGxO/fX7vagqlXNqxeHUxj/tFGSylbiwGQ5GPm0o9dINSB2lrR0ffgGFAqZRR+P8PFE6fQNfIBCr5O6gvy45qN7vNzkJfNO66D9j7vHNwGP0vvI6ly6dROHlsVYkgSujf+RoCm7ehozeKUGIrpHAPSrevIHP4W+T//hmsbqAODGqeTzFJxMDud4wI3PrhKyq/1vqcEEx8/iPCQ2MtQtR6HafefxEVmjrrvmPUgJ+9vWs0ibZgxAh3Y3HAWu0qp0uIRKPz/G5HdxnP7H3OYxIIo3v8WVQLc1i+lmL2eWBgixEF1gjEhhxdpQ+pmROn8sj4Djy2/SVs6B+kOW6DQosrd3Sa2+flzHVagEuQQhGHA4sXTjK7TeJVf2TiOYx9NOUwlDt+ANV81qakWd03p7/A8LuftvymlE1j/sRBS0QFawTYOY+9ug+sEZvcC/nMny1KrNWdPTKN6t0cHt/xMqSuHizPXETm0Ne0XUvMGpB41R9MsLfcYHwrU7lV2cKp33D3v19tf2Y0JhPe3l3OzjAdKGduuO7tfpnwTq254weZDsz+fmDlrnX+WmcIj8VAsOs9vX3tkSilL6E8l0FndBPIhiA9aGYwM/UZ8n/95FDO48bgM50/J/Q+EdPfB3b5/SfDy6kfpuZ+IfQjxetreDjP18MG6c6oSBGFqPspy/YaALyzn5xb1pHbRGU/kWdn0xDUt9yUrsVuSnksaHhTpm+pxsa9MJ87pL+rUdNZt0isR6mDNS1LQCaLxYXDOoqmX5XS8vWO9t4pIqo1OrdKjYXp10E/kXDheYr/0BeR7yRR2bu0VDhvrvsAAAD//xjU7rIAAAAGSURBVAMAzItzOqWHPTYAAAAASUVORK5CYII=">
+<style>
+  :root {
+    --bg: #0e0f13;
+    --bg-alt: #14161c;
+    --bg-card: #1a1c22;
+    --bg-button: #2a2d36;
+    --bg-button-hover: #383c47;
+    --border: #2c2f39;
+    --text: #e8e9ed;
+    --text-muted: #8a8f9b;
+    --accent: #4fc3f7;
+    --accent-hover: #6fd1fb;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(14, 15, 19, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav {
+    max-width: 1120px; margin: 0 auto; padding: 16px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: var(--text); }
+  .logo-mark { width: 26px; height: 26px; flex: none; display: block; }
+  .nav-links { display: flex; gap: 28px; font-size: 14px; color: var(--text-muted); }
+  .nav-links a { color: var(--text-muted); }
+  .nav-links a:hover { color: var(--text); text-decoration: none; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 18px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    border: 1px solid var(--border); background: var(--bg-button); color: var(--text);
+  }
+  .btn:hover { background: var(--bg-button-hover); text-decoration: none; }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: #07222c; }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn.disabled { opacity: .55; cursor: default; pointer-events: none; }
+  @media (max-width: 700px) { .nav-links { display: none; } }
+
+  .legal-hero { max-width: 720px; margin: 0 auto; padding: 56px 24px 8px; text-align: center; }
+  .kicker { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .legal-hero h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.6px; margin: 0 0 10px; }
+  .updated { font-size: 13px; color: var(--text-muted); }
+
+  .legal-content { max-width: 720px; margin: 0 auto; padding: 32px 24px 80px; }
+  .legal-content h2 { font-size: 20px; font-weight: 700; margin: 40px 0 12px; letter-spacing: -0.2px; }
+  .legal-content h2:first-child { margin-top: 0; }
+  .legal-content p { color: var(--text-muted); font-size: 15px; margin: 0 0 14px; }
+  .legal-content ul { color: var(--text-muted); font-size: 15px; margin: 0 0 14px; padding-left: 22px; }
+  .legal-content li { margin-bottom: 8px; }
+  .legal-content strong { color: var(--text); }
+  .callout {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px 18px; font-size: 14px; color: var(--text-muted); margin: 0 0 14px;
+  }
+
+  footer { border-top: 1px solid var(--border); padding: 28px 0; }
+  .footer-row {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--text-muted);
+  }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a { color: var(--text-muted); }
+  .footer-links a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="index.html" class="logo">
+      <svg class="logo-mark" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#1a1c22"/>
+            <stop offset="1" stop-color="#0b0d12"/>
+          </linearGradient>
+        </defs>
+        <rect width="128" height="128" rx="28" fill="url(#logoGrad)"/>
+        <g stroke="#4fc3f7" stroke-width="6" stroke-linecap="round" opacity="0.55">
+          <line x1="38" y1="90" x2="64" y2="46"/>
+          <line x1="64" y1="46" x2="93" y2="73"/>
+        </g>
+        <circle cx="38" cy="90" r="13.5" fill="#4fc3f7"/>
+        <circle cx="64" cy="46" r="13.5" fill="#4fc3f7"/>
+        <circle cx="93" cy="73" r="13.5" fill="#4fc3f7"/>
+      </svg>
+      Pine Node Editor
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="how-it-works.html">Tutorial</a>
+      <a href="index.html#pricing">Pricing</a>
+    </div>
+    <a href="#" class="btn btn-primary js-install" data-soon="Coming soon">Add to Chrome</a>
+  </nav>
+</header>
+
+<div class="legal-hero">
+  <div class="kicker">Legal</div>
+  <h1>Terms of Service</h1>
+  <div class="updated">Last updated: July 14, 2026</div>
+</div>
+
+<div class="legal-content">
+
+<p>These Terms of Service ("Terms") govern your use of Pine Node Editor (the "Extension"), a
+Chrome browser extension that lets you build TradingView strategies visually and export the
+result as Pine Script source code. By installing or using the Extension, you agree to these
+Terms.</p>
+
+<h2>1. What the Extension does</h2>
+<p>Pine Node Editor is a no-code development tool. It lets you assemble indicators, conditions,
+and actions on a visual canvas and compiles that graph into Pine Script v6 source code that you
+can paste into TradingView's own Pine Editor. The Extension does not place trades, connect to
+any brokerage or exchange, execute strategies, monitor markets on your behalf, or provide
+trading signals, recommendations, or financial advice of any kind. It generates code — what you
+do with that code is entirely up to you.</p>
+<p>Pine Node Editor is an independent, third-party tool and is not affiliated with, endorsed by,
+or sponsored by TradingView. "TradingView" and "Pine Script" are trademarks of their respective
+owner; we reference them only to describe compatibility.</p>
+
+<h2>2. Free and Pro plans</h2>
+<p>The Extension is available on a Free plan with a core set of nodes and local graph saving.
+The Pro plan (currently €10/month) unlocks the full node catalog, Pine Script compile/export,
+and graph import/export, and is billed as a recurring subscription through
+<a href="https://polar.sh" target="_blank" rel="noopener">Polar.sh</a>, our payment processor
+and Merchant of Record.</p>
+<ul>
+  <li>You can cancel your subscription at any time; cancellation takes effect at the end of the
+  current billing cycle, and fees already paid for elapsed billing periods are non-refundable.</li>
+  <li>Refunds are handled by Polar and evaluated case by case against applicable law and card
+  network rules — see Polar's
+  <a href="https://polar.sh/legal/checkout-buyer-terms" target="_blank" rel="noopener">buyer terms</a>.
+  If you have a billing issue, contact us first at support@pinenodeeditor.com, or Polar directly.</li>
+  <li>A Pro license key is active on <strong>one device at a time</strong>. Activating on a new
+  device while your activation limit is already in use requires freeing up a slot first (via
+  Polar's customer portal, or a deactivation option in the Extension where available).</li>
+  <li>Checking your Pro status requires an internet connection. If you're offline, the Extension
+  keeps trusting the last known status for a short period but cannot re-grant Pro access without
+  reconnecting.</li>
+  <li>Prices may change for future billing periods; we'll make reasonable efforts to notify
+  active subscribers in advance.</li>
+  <li>If you are a consumer in the EU/EEA, you normally have a 14-day right to withdraw from an
+  online purchase. Because Pro access unlocks immediately on activation, by activating your
+  subscription you expressly request immediate access and acknowledge that you lose this
+  withdrawal right once the digital service has begun, to the extent permitted by applicable
+  law.</li>
+</ul>
+
+<h2>3. Educational purpose — no financial or investment advice</h2>
+<p>Pine Node Editor, including its bundled Templates, Randomizer output, and any tutorials or
+documentation, is provided for <strong>educational and informational purposes only</strong> — to
+help you learn how strategy logic can be structured and translated into Pine Script. It is not a
+signal service, not a trading system sold on the promise of returns, and using it does not imply
+or guarantee any level of profitability, however it's paid for (subscription or otherwise).</p>
+<p>Pine Node Editor is a construction tool, not an advisor. It does not evaluate whether a
+strategy is a good idea, does not recommend entering or exiting any position, and does not tell
+you what to trade. Every decision to build, configure, generate (including via the Randomizer),
+modify, test, deploy, or act on a strategy is made by you and is entirely your responsibility —
+we do not make or influence that decision at any point.</p>
+<p>Like other automated code-generation tools (including AI-based ones), the Extension's output
+can contain mistakes: a compiled script may not do exactly what you intended, may contain logic
+or calculation errors, or may fail to compile in a given TradingView environment. Do not treat
+generated Pine Script as correct by default — always read it, and always backtest and validate
+any strategy before using it with real capital. We provide no guarantee, express or implied,
+that any script — hand-built, template-based, or Randomizer-generated — is fit for any purpose,
+profitable, or free of defects.</p>
+<p>Nothing produced by the Extension is financial, investment, or trading advice, and we do not
+manage funds or execute trades on your behalf. You are solely responsible for your own trading
+and investment decisions and their outcomes.</p>
+
+<h2>4. Automated execution and webhooks</h2>
+<p>Some nodes (for example alert message templates) let you shape the text TradingView sends
+when an alert fires, including formats intended for third-party webhook/auto-trading services.
+The Extension itself never sends a webhook, never talks to a broker or exchange, and has no
+visibility into what any third-party automation does with an alert once TradingView sends it.
+If you choose to wire a generated script's alerts into an automated execution pipeline, that
+setup and everything that follows from it — including trades placed without your manual review
+— is entirely your own configuration and your own risk.</p>
+
+<h2>5. Platform requirements</h2>
+<p>The Extension runs only in desktop Chrome and Chromium-compatible desktop browsers. It does
+not work on mobile Chrome (Android or iOS) — this is a platform limitation of Chrome's
+extension APIs, not a design choice we can adapt around.</p>
+
+<h2>6. Your content</h2>
+<p>The strategy graphs you build and the Pine Script generated from them are yours. We don't
+claim ownership over anything you create with the Extension. Graph data is stored in your
+browser (see our <a href="privacy.html">Privacy Policy</a> for details) — we don't hold a copy
+on our servers, so you're responsible for exporting or otherwise backing up graphs you want to
+keep.</p>
+
+<h2>7. Acceptable use</h2>
+<p>You agree not to reverse-engineer, redistribute, or resell the Extension outside of what the
+Chrome Web Store's own terms permit, and not to circumvent or abuse the Pro license/activation
+system. We may suspend or revoke access for accounts found to be doing either.</p>
+<p>If you discover a defect or bug in the Extension or in the Pine Script it generates, we'd
+appreciate a report to support@pinenodeeditor.com — it helps us improve the tool. As with
+everything else in Section 3, choosing to continue using functionality you know or suspect to be
+defective, including with real capital, remains entirely your own decision and risk. For security
+vulnerabilities specifically, please report them to us privately rather than disclosing or
+exploiting them publicly, and give us a reasonable opportunity to investigate before any public
+disclosure.</p>
+
+<h2>8. Disclaimer of warranties</h2>
+<p>The Extension is provided "as is" and "as available," without warranties of any kind, express
+or implied, including fitness for a particular purpose, non-infringement, or that generated code
+will be error-free, logically correct, profitable, or will compile successfully in every
+TradingView environment. As with any automated code-generation tool, outputs may be inaccurate
+or incomplete — you are responsible for reviewing and validating everything the Extension
+produces before relying on it in any way, including before pasting it into TradingView or
+connecting it to any automated execution pipeline.</p>
+
+<h2>9. Limitation of liability and indemnification</h2>
+<p>To the maximum extent permitted by law, we are not liable for any indirect, incidental,
+special, or consequential damages — including trading or investment losses, lost profits, or
+losses from automated/webhook-driven execution — arising from your use of the Extension, any
+script it generates, or any decision you make to build, deploy, or act on that script. Our total
+liability for any claim arising from these Terms or your use of the Extension will not exceed
+the amount you paid us in the 12 months before the claim arose.</p>
+<p>You agree to indemnify and hold us harmless from any claim, loss, or expense (including
+reasonable legal fees) brought by a third party arising from your use of the Extension, a
+strategy or script you built or deployed, or your violation of these Terms.</p>
+
+<h2>10. Dispute resolution</h2>
+<p>If a dispute arises, please contact us first at support@pinenodeeditor.com so we can try to
+resolve it directly. Any dispute that can't be resolved this way is subject to the exclusive
+jurisdiction of the courts of Estonia, without prejudice to any mandatory consumer-protection
+rights you may have in your own country of residence under applicable law.</p>
+
+<h2>11. Changes to these Terms</h2>
+<p>We may update these Terms as the product evolves. Material changes will be reflected by
+updating the "Last updated" date above; continued use after a change means you accept the
+revised Terms.</p>
+
+<h2>12. Governing law</h2>
+<p>These Terms are governed by the laws of Estonia, without regard to conflict-of-law
+principles.</p>
+
+<h2>13. General</h2>
+<p>These Terms are the entire agreement between you and us regarding the Extension and supersede
+any prior agreements on the subject. If any provision of these Terms is found unenforceable, the
+remaining provisions stay in full effect.</p>
+
+<h2>14. Contact</h2>
+<p>Questions about these Terms? Email us at
+<a href="mailto:support@pinenodeeditor.com">support@pinenodeeditor.com</a>.</p>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-row">
+      <div>© <span id="year"></span> Pine Node Editor. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Chrome Web Store listing — fill in the URL when the extension is
+  // published (keep in sync with the same constant in index.html/how-it-works.html).
+  var CHROME_STORE_URL = '';
+
+  document.querySelectorAll('.js-install').forEach(function (a) {
+    if (CHROME_STORE_URL) {
+      a.href = CHROME_STORE_URL;
+      a.target = '_blank';
+      a.rel = 'noopener';
+    } else {
+      a.textContent = a.dataset.soon || 'Coming soon to Chrome Web Store';
+      a.classList.add('disabled');
+      a.removeAttribute('href');
+      a.title = 'The extension is on its way to the Chrome Web Store — email us to get notified at launch';
+    }
+  });
+</script>
+
+</body>
+</html>
