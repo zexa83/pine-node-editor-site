@@ -937,15 +937,44 @@
     var buffer = '';
     var pos = 0;
     var MAX_BUFFER = 4000;
+    var running = false;
+    var timer = null;
+    var SCROLL_EVERY = 5; // avoid forcing a layout reflow on every single char
+    var ticksSinceScroll = 0;
+
     function tick() {
       buffer += snippet[pos % snippet.length];
       pos++;
       if (buffer.length > MAX_BUFFER) buffer = buffer.slice(buffer.length - MAX_BUFFER + 500);
       el.textContent = buffer + '▍';
-      el.scrollTop = el.scrollHeight;
-      setTimeout(tick, 26);
+      ticksSinceScroll++;
+      if (ticksSinceScroll >= SCROLL_EVERY) {
+        ticksSinceScroll = 0;
+        el.scrollTop = el.scrollHeight;
+      }
+      timer = setTimeout(tick, 26);
     }
-    tick();
+    function start() {
+      if (running || document.hidden) return;
+      running = true;
+      tick();
+    }
+    function stop() {
+      running = false;
+      clearTimeout(timer);
+    }
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) start(); else stop();
+      });
+      io.observe(el);
+    } else {
+      start();
+    }
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stop(); else start();
+    });
   })();
 
   var CONTACT_EMAIL = 'support@pinenodeeditor.com';
