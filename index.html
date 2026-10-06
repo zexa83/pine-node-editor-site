@@ -196,6 +196,38 @@
     color: var(--text-muted);
   }
 
+  .next-update {
+    max-width: 620px;
+    margin: 28px auto 0;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    text-align: left;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .next-update-tag {
+    display: inline-block;
+    margin-bottom: 8px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .next-update ul {
+    margin: 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 4px;
+  }
+  .next-update strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
   @media (max-width: 640px) {
     h1 { font-size: 34px; }
     .hero { padding: 56px 0 48px; }
@@ -562,7 +594,7 @@
       <a href="#contact">Contact</a>
     </div>
     <div class="nav-cta">
-      <a href="#" class="btn btn-primary js-install" data-soon="Coming soon" title="Chrome Web Store — also works in Edge, Brave, Opera and other Chromium browsers">Add to Chrome</a>
+      <a href="#" class="btn btn-primary js-install" title="Chrome Web Store — also works in Edge, Brave, Opera and other Chromium browsers">Add to Chrome</a>
     </div>
   </nav>
 </header>
@@ -581,6 +613,17 @@
       <a href="#how" class="btn btn-lg">See how it works</a>
     </div>
     <div class="hero-note">Free tier available · Pro from €10/month · Desktop only (Chrome, Edge, Brave & other Chromium browsers)</div>
+
+    <!-- Pre-release teaser: replace with the real feature section when the update ships. -->
+    <div class="next-update">
+      <span class="next-update-tag">Coming in the next update</span>
+      <ul>
+        <li><strong>AI Assistant</strong>: describe a strategy in plain words, and ChatGPT, Claude, Gemini or Grok drafts the graph for you to check</li>
+        <li><strong>Higher-timeframe filters</strong>, e.g. a 4H trend on a 15m chart, with no lookahead</li>
+        <li><strong>Smarter exits</strong>: close only longs or only shorts, or after N bars in a trade</li>
+        <li><strong>Try Pro for free</strong>: 5 generations a month with Pro nodes on the Free plan</li>
+      </ul>
+    </div>
 
     <div class="mockup">
       <div class="mockup-bar">
@@ -979,23 +1022,13 @@
 
   var CONTACT_EMAIL = 'support@pinenodeeditor.com';
 
-  // Chrome Web Store listing — fill in the URL when the extension is
-  // published. While it's empty, every install button renders as a
-  // non-clickable "coming soon" state instead of a dead link.
   var CHROME_STORE_URL = 'https://chromewebstore.google.com/detail/pine-node-editor/olemagaijdihojihbolpjdfgeneikojc';
   var CHECKOUT_URL = 'https://buy.polar.sh/polar_cl_YnEEohPYqLEwSgB5P8DXXPDfL57NfP8BDkihn00aBcS';
 
   document.querySelectorAll('.js-install').forEach(function (a) {
-    if (CHROME_STORE_URL) {
-      a.href = CHROME_STORE_URL;
-      a.target = '_blank';
-      a.rel = 'noopener';
-    } else {
-      a.textContent = a.dataset.soon || 'Coming soon to Chrome Web Store';
-      a.classList.add('disabled');
-      a.removeAttribute('href');
-      a.title = 'The extension is on its way to the Chrome Web Store — email us to get notified at launch';
-    }
+    a.href = CHROME_STORE_URL;
+    a.target = '_blank';
+    a.rel = 'noopener';
   });
   document.querySelectorAll('.js-checkout').forEach(function (a) {
     a.href = CHECKOUT_URL;
